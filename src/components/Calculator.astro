@@ -42,7 +42,7 @@ const lightDarkShadowColor = colorLuminance(
 );
 ---
 
-<div class="calculator standalone">
+<div id="calculator" class="calculator standalone">
   <CalculatorScreen />
   <CalculatorButtonGrid
     lightBackgroundColor={lightBackgroundColor}
@@ -51,6 +51,56 @@ const lightDarkShadowColor = colorLuminance(
     darkTextColor={darkTextColor}
   />
 </div>
+
+<script>
+  const calculator = document.getElementById("calculator")!;
+  const mathInput = document.getElementById(
+    "math-input",
+  ) as HTMLTextAreaElement;
+  const mathOutput = document.getElementById("math-output") as HTMLInputElement;
+  const buttons = calculator.getElementsByClassName(
+    "calculator-button",
+  ) as HTMLCollectionOf<HTMLButtonElement>;
+
+  mathInput.addEventListener("input", handleInputChange);
+
+  for (const button of buttons) {
+    button.addEventListener("click", () => handleClick(button));
+  }
+
+  function handleClick(button: HTMLButtonElement) {
+    const value = button.dataset.value;
+
+    switch (value) {
+      case "=":
+        mathOutput.value = "";
+        break;
+      case "clear":
+        mathInput.value = "";
+        mathOutput.value = "";
+        break;
+      case "backspace":
+        mathInput.value = mathInput.value.slice(0, -1);
+        mathOutput.value = "";
+        break;
+      case "retry":
+        mathOutput.value = "";
+        break;
+      default:
+        mathInput.value += value;
+        mathOutput.value = "";
+    }
+    mathInput.focus();
+  }
+
+  function handleInputChange() {
+    mathInput.value = mathInput.value
+      .replaceAll("/", "÷")
+      .replaceAll("*", "×")
+      .replaceAll("-", "−");
+    mathOutput.value = "";
+  }
+</script>
 
 <style
   define:vars={{
@@ -61,7 +111,7 @@ const lightDarkShadowColor = colorLuminance(
     darkDarkShadowColor,
   }}
 >
-  .calculator {
+  #calculator {
     --calculatorWidth: 400px;
     --calculatorGap: calc(var(--calculatorWidth) / 25);
 
@@ -84,7 +134,7 @@ const lightDarkShadowColor = colorLuminance(
     font-feature-settings: "tnum", "cv03", "cv04", "calt";
   }
 
-  .standalone {
+  #calculator.standalone {
     --darkShadowColor: var(--darkLightShadowColor);
     --lightShadowColor: var(--lightLightShadowColor);
 
@@ -98,7 +148,7 @@ const lightDarkShadowColor = colorLuminance(
   }
 
   @media (prefers-color-scheme: dark) {
-    .standalone {
+    #calculator.standalone {
       --darkShadowColor: var(--darkDarkShadowColor);
       --lightShadowColor: var(--lightDarkShadowColor);
     }

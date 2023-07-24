@@ -11,6 +11,8 @@ interface Props {
   lightTextColor: HexColor;
   darkTextColor: HexColor;
 
+  value?: string;
+
   class?: string;
   "class:list"?: string[];
 }
@@ -23,6 +25,8 @@ const {
 
   lightTextColor: globalLightTextColor,
   darkTextColor: globalDarkTextColor,
+
+  value,
 
   "class:list": classList = [],
   class: className = "",
@@ -136,7 +140,10 @@ const darkDarkGradientColor = colorLuminance(darkGradientColor, -0.1);
 const lightDarkGradientColor = colorLuminance(darkGradientColor, 0.5);
 ---
 
-<button class:list={["calculator-button", type, ...classList, className]}>
+<button
+  data-value={value}
+  class:list={["calculator-button", type, ...classList, className]}
+>
   <slot />
 </button>
 
