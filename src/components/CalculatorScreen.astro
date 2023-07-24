@@ -1,0 +1,80 @@
+---
+
+---
+
+<div class="screen">
+  <textarea id="math-input">1+1</textarea>
+  <input id="math-output" value="2" readonly />
+</div>
+
+<style>
+  .screen {
+    --screenHeight: calc(var(--buttonSize) * 2.5);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+
+    height: var(--screenHeight);
+    overflow: hidden;
+    box-sizing: border-box;
+    margin-bottom: calc(var(--calculatorGap) * 2);
+    border-radius: var(--buttonBorderRadius);
+    box-shadow:
+      inset var(--shadowOffset) var(--shadowOffset) var(--blurRadius)
+        var(--darkShadowColor),
+      inset calc(var(--shadowOffset) * -1) calc(var(--shadowOffset) * -1)
+        var(--blurRadius) var(--lightShadowColor);
+  }
+
+  .screen > textarea,
+  .screen > input {
+    --screenPadding: calc(var(--buttonBorderRadius) / 2);
+
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0px;
+    padding: var(--screenPadding);
+    text-align: right;
+    border: none;
+    outline: none;
+    background: none;
+    font-family: inherit;
+    font-feature-settings: inherit;
+    font-size: calc(var(--buttonSize) / 1.5);
+    resize: none;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  #math-input {
+    flex-grow: 1;
+
+    color: inherit;
+
+    border-top-left-radius: calc(var(--buttonBorderRadius));
+    border-top-right-radius: calc(var(--buttonBorderRadius));
+
+    padding-bottom: 0;
+  }
+
+  #math-output {
+    color: #1976d2;
+
+    border-bottom-left-radius: calc(
+      var(--buttonBorderRadius) - var(--shadowOffset)
+    );
+    border-bottom-right-radius: calc(
+      var(--buttonBorderRadius) - var(--shadowOffset)
+    );
+
+    padding-top: 0;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    #math-output {
+      color: #2196f3;
+    }
+  }
+</style>

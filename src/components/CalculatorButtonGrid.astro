@@ -1,0 +1,221 @@
+---
+import type { HexColor } from "../types/CssColor";
+import CalculatorButton from "./CalculatorButton.astro";
+
+import BackspaceIcon from "./icons/BackspaceIcon.astro";
+import DivideIcon from "./icons/DivideIcon.astro";
+import DotIcon from "./icons/DotIcon.astro";
+import EqualIcon from "./icons/EqualIcon.astro";
+import MinusIcon from "./icons/MinusIcon.astro";
+import MultiplyIcon from "./icons/MultiplyIcon.astro";
+import PlusIcon from "./icons/PlusIcon.astro";
+import RefreshIcon from "./icons/RefreshIcon.astro";
+
+interface Props {
+  lightBackgroundColor: HexColor;
+  darkBackgroundColor: HexColor;
+
+  lightTextColor: HexColor;
+  darkTextColor: HexColor;
+}
+
+const {
+  lightBackgroundColor,
+  darkBackgroundColor,
+  lightTextColor,
+  darkTextColor,
+} = Astro.props;
+---
+
+<div class="calculator-button-grid">
+  <CalculatorButton
+    type="clear"
+    lightBackgroundColor={lightBackgroundColor}
+    darkBackgroundColor={darkBackgroundColor}
+    lightTextColor={lightTextColor}
+    darkTextColor={darkTextColor}
+  >
+    C
+  </CalculatorButton>
+  <CalculatorButton
+    class="retry"
+    type="retry"
+    lightBackgroundColor={lightBackgroundColor}
+    darkBackgroundColor={darkBackgroundColor}
+    lightTextColor={lightTextColor}
+    darkTextColor={darkTextColor}
+  >
+    <RefreshIcon />{" "}<span style="font-weight: 500">Regenerate</span>
+  </CalculatorButton>
+  <CalculatorButton
+    type="operator"
+    lightBackgroundColor={lightBackgroundColor}
+    darkBackgroundColor={darkBackgroundColor}
+    lightTextColor={lightTextColor}
+    darkTextColor={darkTextColor}
+  >
+    <DivideIcon />
+  </CalculatorButton>
+  <CalculatorButton
+    type="number"
+    lightBackgroundColor={lightBackgroundColor}
+    darkBackgroundColor={darkBackgroundColor}
+    lightTextColor={lightTextColor}
+    darkTextColor={darkTextColor}
+  >
+    7
+  </CalculatorButton>
+  <CalculatorButton
+    type="number"
+    lightBackgroundColor={lightBackgroundColor}
+    darkBackgroundColor={darkBackgroundColor}
+    lightTextColor={lightTextColor}
+    darkTextColor={darkTextColor}
+  >
+    8
+  </CalculatorButton>
+  <CalculatorButton
+    type="number"
+    lightBackgroundColor={lightBackgroundColor}
+    darkBackgroundColor={darkBackgroundColor}
+    lightTextColor={lightTextColor}
+    darkTextColor={darkTextColor}
+  >
+    9
+  </CalculatorButton>
+  <CalculatorButton
+    type="operator"
+    lightBackgroundColor={lightBackgroundColor}
+    darkBackgroundColor={darkBackgroundColor}
+    lightTextColor={lightTextColor}
+    darkTextColor={darkTextColor}
+  >
+    <MultiplyIcon />
+  </CalculatorButton>
+  <CalculatorButton
+    type="number"
+    lightBackgroundColor={lightBackgroundColor}
+    darkBackgroundColor={darkBackgroundColor}
+    lightTextColor={lightTextColor}
+    darkTextColor={darkTextColor}
+  >
+    4
+  </CalculatorButton>
+  <CalculatorButton
+    type="number"
+    lightBackgroundColor={lightBackgroundColor}
+    darkBackgroundColor={darkBackgroundColor}
+    lightTextColor={lightTextColor}
+    darkTextColor={darkTextColor}
+  >
+    5
+  </CalculatorButton>
+  <CalculatorButton
+    type="number"
+    lightBackgroundColor={lightBackgroundColor}
+    darkBackgroundColor={darkBackgroundColor}
+    lightTextColor={lightTextColor}
+    darkTextColor={darkTextColor}
+  >
+    6
+  </CalculatorButton>
+  <CalculatorButton
+    type="operator"
+    lightBackgroundColor={lightBackgroundColor}
+    darkBackgroundColor={darkBackgroundColor}
+    lightTextColor={lightTextColor}
+    darkTextColor={darkTextColor}
+  >
+    <MinusIcon />
+  </CalculatorButton>
+  <CalculatorButton
+    type="number"
+    lightBackgroundColor={lightBackgroundColor}
+    darkBackgroundColor={darkBackgroundColor}
+    lightTextColor={lightTextColor}
+    darkTextColor={darkTextColor}
+  >
+    1
+  </CalculatorButton>
+  <CalculatorButton
+    type="number"
+    lightBackgroundColor={lightBackgroundColor}
+    darkBackgroundColor={darkBackgroundColor}
+    lightTextColor={lightTextColor}
+    darkTextColor={darkTextColor}
+  >
+    2
+  </CalculatorButton>
+  <CalculatorButton
+    type="number"
+    lightBackgroundColor={lightBackgroundColor}
+    darkBackgroundColor={darkBackgroundColor}
+    lightTextColor={lightTextColor}
+    darkTextColor={darkTextColor}
+  >
+    3
+  </CalculatorButton>
+  <CalculatorButton
+    type="operator"
+    lightBackgroundColor={lightBackgroundColor}
+    darkBackgroundColor={darkBackgroundColor}
+    lightTextColor={lightTextColor}
+    darkTextColor={darkTextColor}
+  >
+    <PlusIcon />
+  </CalculatorButton>
+  <CalculatorButton
+    type="number"
+    lightBackgroundColor={lightBackgroundColor}
+    darkBackgroundColor={darkBackgroundColor}
+    lightTextColor={lightTextColor}
+    darkTextColor={darkTextColor}
+  >
+    0
+  </CalculatorButton>
+  <CalculatorButton
+    type="number"
+    lightBackgroundColor={lightBackgroundColor}
+    darkBackgroundColor={darkBackgroundColor}
+    lightTextColor={lightTextColor}
+    darkTextColor={darkTextColor}
+  >
+    <DotIcon />
+  </CalculatorButton>
+  <CalculatorButton
+    type="number"
+    lightBackgroundColor={lightBackgroundColor}
+    darkBackgroundColor={darkBackgroundColor}
+    lightTextColor={lightTextColor}
+    darkTextColor={darkTextColor}
+  >
+    <BackspaceIcon />
+  </CalculatorButton>
+  <CalculatorButton
+    type="equal"
+    lightBackgroundColor={lightBackgroundColor}
+    darkBackgroundColor={darkBackgroundColor}
+    lightTextColor={lightTextColor}
+    darkTextColor={darkTextColor}
+  >
+    <EqualIcon />
+  </CalculatorButton>
+</div>
+
+<style>
+  .calculator-button-grid {
+    width: var(--calculatorButtonGridWidth);
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    grid-column-gap: var(--calculatorGap);
+    grid-row-gap: var(--calculatorGap);
+
+    font-feature-settings: "tnum", "cv03", "cv04", "calt";
+  }
+
+  .calculator-button-grid > .retry {
+    grid-area: 1 / 2 / 2 / 4;
+  }
+</style>

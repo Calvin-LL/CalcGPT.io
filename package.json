@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "calc-gpt",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -10,6 +10,12 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^2.8.4"
+    "astro": "^2.8.4",
+    "inter-ui": "^3.19.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.2",
+    "prettier": "^3.0.0",
+    "prettier-plugin-astro": "^0.11.0"
   }
 }

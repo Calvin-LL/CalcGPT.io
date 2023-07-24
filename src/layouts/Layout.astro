@@ -1,36 +1,67 @@
 ---
+import "inter-ui/inter-hinted-latin.css";
+import type { HexColor } from "../types/CssColor";
+
 interface Props {
-	title: string;
+  title: string;
+
+  lightBackgroundColor: HexColor;
+  darkBackgroundColor: HexColor;
+
+  lightTextColor: HexColor;
+  darkTextColor: HexColor;
 }
 
-const { title } = Astro.props;
+const {
+  title,
+  lightBackgroundColor,
+  darkBackgroundColor,
+  lightTextColor,
+  darkTextColor,
+} = Astro.props;
+
+const backgroundColorStyleString = `
+:root {
+  --lightBackground: ${lightBackgroundColor};
+  --darkBackground: ${darkBackgroundColor};
+  --lightText: ${lightTextColor};
+  --darkText: ${darkTextColor};
+}`.trim();
 ---
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description">
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <style set:html={backgroundColorStyleString}></style>
+
+    <meta charset="UTF-8" />
+    <meta name="description" content="A calculator powered by GPT" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
 </html>
+
 <style is:global>
-	:root {
-		--accent: 124, 58, 237;
-		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background-color: #F6F6F6;
-	}
-	code {
-		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-			Bitstream Vera Sans Mono, Courier New, monospace;
-	}
+  html {
+    font-family: "Inter", system-ui, sans-serif;
+    background-color: var(--lightBackground);
+    color: var(--lightText);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html {
+      background-color: var(--darkBackground);
+      color: var(--darkText);
+    }
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
 </style>

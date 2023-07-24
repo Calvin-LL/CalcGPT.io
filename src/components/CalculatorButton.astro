@@ -1,0 +1,258 @@
+---
+import { colorLuminance } from "../helpers";
+import type { HexColor } from "../types/CssColor";
+
+interface Props {
+  type: "number" | "operator" | "equal" | "clear" | "retry";
+
+  lightBackgroundColor: HexColor;
+  darkBackgroundColor: HexColor;
+
+  lightTextColor: HexColor;
+  darkTextColor: HexColor;
+
+  class?: string;
+  "class:list"?: string[];
+}
+
+const {
+  type,
+
+  lightBackgroundColor,
+  darkBackgroundColor,
+
+  lightTextColor: globalLightTextColor,
+  darkTextColor: globalDarkTextColor,
+
+  "class:list": classList = [],
+  class: className = "",
+} = Astro.props;
+
+const colors = {
+  light: {
+    number: {
+      shadowColor: lightBackgroundColor,
+      gradientColor: lightBackgroundColor,
+      textColor: globalLightTextColor,
+      colorDifference: 0.15,
+    },
+    operator: {
+      shadowColor: lightBackgroundColor,
+      gradientColor: lightBackgroundColor,
+      textColor: "#1E88E5",
+      colorDifference: 0.15,
+    },
+    equal: {
+      shadowColor: "#e4f6fe",
+      gradientColor: "#1E88E5",
+      textColor: globalDarkTextColor,
+      colorDifference: 0.15,
+    },
+    clear: {
+      shadowColor: lightBackgroundColor,
+      gradientColor: lightBackgroundColor,
+      textColor: "#F44336",
+      colorDifference: 0.15,
+    },
+    retry: {
+      shadowColor: lightBackgroundColor,
+      gradientColor: lightBackgroundColor,
+      textColor: "#388E3C",
+      colorDifference: 0.15,
+    },
+  },
+  dark: {
+    number: {
+      shadowColor: darkBackgroundColor,
+      gradientColor: darkBackgroundColor,
+      textColor: globalDarkTextColor,
+      colorDifference: 0.9,
+    },
+    operator: {
+      shadowColor: darkBackgroundColor,
+      gradientColor: darkBackgroundColor,
+      textColor: "#2196F3",
+      colorDifference: 0.9,
+    },
+    equal: {
+      shadowColor: "#07285a",
+      gradientColor: "#1E88E5",
+      textColor: globalDarkTextColor,
+      colorDifference: 0.9,
+    },
+    clear: {
+      shadowColor: darkBackgroundColor,
+      gradientColor: darkBackgroundColor,
+      textColor: "#EF5350",
+      colorDifference: 0.9,
+    },
+    retry: {
+      shadowColor: darkBackgroundColor,
+      gradientColor: darkBackgroundColor,
+      textColor: "#4CAF50",
+      colorDifference: 0.9,
+    },
+  },
+} as const;
+
+// light theme
+const {
+  shadowColor: lightShadowColor,
+  gradientColor: lightGradientColor,
+  textColor: lightTextColor,
+  colorDifference: lightColorDifference,
+} = colors["light"][type];
+
+const darkLightShadowColor = colorLuminance(
+  lightShadowColor,
+  lightColorDifference * -1,
+);
+const lightLightShadowColor = colorLuminance(
+  lightShadowColor,
+  lightColorDifference,
+);
+
+const darkLightGradientColor = colorLuminance(lightGradientColor, -0.1);
+const lightLightGradientColor = colorLuminance(lightGradientColor, 0.07);
+
+// dark theme
+const {
+  shadowColor: darkShadowColor,
+  gradientColor: darkGradientColor,
+  textColor: darkTextColor,
+  colorDifference: darkColorDifference,
+} = colors["dark"][type];
+
+const darkDarkShadowColor = colorLuminance(
+  darkShadowColor,
+  darkColorDifference * -1,
+);
+const lightDarkShadowColor = colorLuminance(
+  darkShadowColor,
+  darkColorDifference,
+);
+
+const darkDarkGradientColor = colorLuminance(darkGradientColor, -0.1);
+const lightDarkGradientColor = colorLuminance(darkGradientColor, 0.5);
+---
+
+<button class:list={["calculator-button", type, ...classList, className]}>
+  <slot />
+</button>
+
+<style
+  define:vars={{
+    darkLightShadowColor,
+    lightLightShadowColor,
+    darkLightGradientColor,
+    lightLightGradientColor,
+
+    darkDarkShadowColor,
+    lightDarkShadowColor,
+    darkDarkGradientColor,
+    lightDarkGradientColor,
+
+    darkTextColor,
+    lightTextColor,
+
+    textFontSizeOverride:
+      type === "retry" ? "calc(var(--buttonSize) / 4)" : undefined,
+  }}
+>
+  .calculator-button {
+    --fontSize: var(--textFontSizeOverride, calc(var(--buttonSize) / 2.3));
+    --color: var(--lightTextColor);
+
+    position: relative;
+    z-index: 1;
+
+    border: none;
+    padding: 0;
+    margin: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-width: var(--buttonSize);
+    min-height: var(--buttonSize);
+    border-radius: var(--buttonBorderRadius);
+    box-shadow:
+      var(--shadowOffset) var(--shadowOffset) var(--blurRadius)
+        var(--darkLightShadowColor),
+      calc(var(--shadowOffset) * -1) calc(var(--shadowOffset) * -1)
+        var(--blurRadius) var(--lightLightShadowColor);
+
+    font-family: inherit;
+    font-feature-settings: inherit;
+    font-size: var(--fontSize);
+    color: var(--lightTextColor);
+
+    background: linear-gradient(
+      135deg,
+      var(--lightLightGradientColor),
+      var(--darkLightGradientColor)
+    );
+  }
+
+  .calculator-button::before {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    content: "";
+
+    background: linear-gradient(
+      135deg,
+      var(--darkLightGradientColor),
+      var(--lightLightGradientColor)
+    );
+
+    border-radius: var(--buttonBorderRadius);
+
+    transition: opacity 150ms ease;
+
+    opacity: 0;
+  }
+
+  @media (hover: hover) {
+    .calculator-button:hover::before {
+      opacity: 0.5;
+    }
+  }
+
+  .calculator-button:active::before {
+    opacity: 1;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .calculator-button {
+      --color: var(--darkTextColor);
+
+      box-shadow:
+        var(--shadowOffset) var(--shadowOffset) var(--blurRadius)
+          var(--darkDarkShadowColor),
+        calc(var(--shadowOffset) * -1) calc(var(--shadowOffset) * -1)
+          var(--blurRadius) var(--lightDarkShadowColor);
+
+      background: linear-gradient(
+        135deg,
+        var(--lightDarkGradientColor),
+        var(--darkDarkGradientColor)
+      );
+
+      color: var(--darkTextColor);
+    }
+
+    .calculator-button::before {
+      background: linear-gradient(
+        135deg,
+        var(--darkDarkGradientColor),
+        var(--lightDarkGradientColor)
+      );
+    }
+  }
+</style>

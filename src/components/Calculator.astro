@@ -1,0 +1,106 @@
+---
+import { colorLuminance } from "../helpers";
+import type { HexColor } from "../types/CssColor";
+import CalculatorButtonGrid from "./CalculatorButtonGrid.astro";
+import CalculatorScreen from "./CalculatorScreen.astro";
+
+interface Props {
+  lightBackgroundColor: HexColor;
+  darkBackgroundColor: HexColor;
+
+  lightTextColor: HexColor;
+  darkTextColor: HexColor;
+}
+
+const {
+  lightBackgroundColor,
+  darkBackgroundColor,
+  lightTextColor,
+  darkTextColor,
+} = Astro.props;
+
+// light theme
+const lightColorDifference = 0.15;
+const darkLightShadowColor = colorLuminance(
+  lightBackgroundColor,
+  lightColorDifference * -1,
+);
+const lightLightShadowColor = colorLuminance(
+  lightBackgroundColor,
+  lightColorDifference,
+);
+
+// dark theme
+const darkColorDifference = 0.9;
+const darkDarkShadowColor = colorLuminance(
+  darkBackgroundColor,
+  darkColorDifference * -1,
+);
+const lightDarkShadowColor = colorLuminance(
+  darkBackgroundColor,
+  darkColorDifference,
+);
+---
+
+<div class="calculator standalone">
+  <CalculatorScreen />
+  <CalculatorButtonGrid
+    lightBackgroundColor={lightBackgroundColor}
+    darkBackgroundColor={darkBackgroundColor}
+    lightTextColor={lightTextColor}
+    darkTextColor={darkTextColor}
+  />
+</div>
+
+<style
+  define:vars={{
+    lightLightShadowColor,
+    darkLightShadowColor,
+
+    lightDarkShadowColor,
+    darkDarkShadowColor,
+  }}
+>
+  .calculator {
+    --calculatorWidth: 400px;
+    --calculatorGap: calc(var(--calculatorWidth) / 25);
+
+    --calculatorButtonGridWidth: calc(
+      var(--calculatorWidth) - var(--calculatorGap) * 2
+    );
+
+    --buttonSize: calc(
+      (var(--calculatorButtonGridWidth) - var(--calculatorGap) * 3) / 4
+    );
+    --buttonBorderRadius: calc(var(--buttonSize) / 2);
+
+    --shadowOffset: calc(var(--buttonSize) / 25);
+    --blurRadius: calc(var(--shadowOffset) * 2);
+
+    width: var(--calculatorWidth);
+    padding: var(--calculatorGap);
+    box-sizing: border-box;
+
+    font-feature-settings: "tnum", "cv03", "cv04", "calt";
+  }
+
+  .standalone {
+    --darkShadowColor: var(--darkLightShadowColor);
+    --lightShadowColor: var(--lightLightShadowColor);
+
+    border-radius: calc(var(--buttonBorderRadius) + var(--calculatorGap));
+
+    box-shadow:
+      var(--shadowOffset) var(--shadowOffset) var(--blurRadius)
+        var(--darkShadowColor),
+      calc(var(--shadowOffset) * -1) calc(var(--shadowOffset) * -1)
+        var(--blurRadius) var(--lightShadowColor);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .standalone {
+      --darkShadowColor: var(--darkDarkShadowColor);
+      --lightShadowColor: var(--lightDarkShadowColor);
+    }
+  }
+</style>
