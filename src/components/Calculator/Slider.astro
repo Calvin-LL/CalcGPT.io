@@ -167,6 +167,7 @@ const lightDarkThumbGradientColor = colorLuminance(darkThumbGradientColor, 0.5);
     --darkThumbShadowColor: var(--darkLightThumbShadowColor);
     --lightThumbGradientColor: var(--lightLightThumbGradientColor);
     --darkThumbGradientColor: var(--darkLightThumbGradientColor);
+    --thumbSize: calc(var(--trackHeight) * 0.9);
 
     margin: 0;
     padding: 0;
@@ -189,6 +190,23 @@ const lightDarkThumbGradientColor = colorLuminance(darkThumbGradientColor, 0.5);
   }
 
   .slider > input[type="range"]::-webkit-slider-runnable-track {
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: calc(var(--trackHeight) / 2);
+    height: var(--trackHeight);
+
+    box-shadow:
+      inset var(--shadowOffset) var(--shadowOffset) var(--blurRadius)
+        var(--darkShadowColor),
+      inset calc(var(--shadowOffset) * -1) calc(var(--shadowOffset) * -1)
+        var(--blurRadius) var(--lightShadowColor);
+  }
+
+  .slider > input[type="range"]::-moz-range-track {
+    margin: 0;
+    padding: 0;
+    border: none;
     border-radius: calc(var(--trackHeight) / 2);
     height: var(--trackHeight);
 
@@ -200,10 +218,34 @@ const lightDarkThumbGradientColor = colorLuminance(darkThumbGradientColor, 0.5);
   }
 
   .slider > input[type="range"]::-webkit-slider-thumb {
-    --thumbSize: calc(var(--trackHeight) * 0.9);
-
     -webkit-appearance: none;
     appearance: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+
+    height: var(--thumbSize);
+    width: var(--thumbSize);
+    margin-top: calc((var(--trackHeight) - var(--thumbSize)) / 2);
+    border-radius: calc(var(--thumbSize) / 2);
+
+    box-shadow:
+      var(--shadowOffset) 0 var(--blurRadius) var(--darkThumbShadowColor),
+      calc(var(--shadowOffset) * -1) 0 var(--blurRadius)
+        var(--lightThumbShadowColor);
+
+    background: linear-gradient(
+      135deg,
+      var(--lightThumbGradientColor),
+      var(--darkThumbGradientColor)
+    );
+  }
+
+  .slider > input[type="range"]::-moz-range-thumb {
+    appearance: none;
+    margin: 0;
+    padding: 0;
+    border: none;
 
     height: var(--thumbSize);
     width: var(--thumbSize);
