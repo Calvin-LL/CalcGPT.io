@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "astro": "^2.8.4",
-    "inter-ui": "^3.19.3"
+    "crypto-random-string": "^5.0.0",
+    "inter-ui": "^3.19.3",
+    "openai": "^3.3.0"
   },
   "devDependencies": {
     "@types/node": "^20.4.2",

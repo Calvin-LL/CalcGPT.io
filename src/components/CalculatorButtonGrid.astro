@@ -19,204 +19,45 @@ interface Props {
   darkTextColor: HexColor;
 }
 
-const {
-  lightBackgroundColor,
-  darkBackgroundColor,
-  lightTextColor,
-  darkTextColor,
-} = Astro.props;
+const { ...props } = Astro.props;
 ---
 
 <div class="calculator-button-grid">
-  <CalculatorButton
-    type="clear"
-    value="clear"
-    lightBackgroundColor={lightBackgroundColor}
-    darkBackgroundColor={darkBackgroundColor}
-    lightTextColor={lightTextColor}
-    darkTextColor={darkTextColor}
-  >
+  <CalculatorButton type="clear" data-value="clear" {...props}>
     C
   </CalculatorButton>
-  <CalculatorButton
-    class="retry"
-    type="retry"
-    value="retry"
-    lightBackgroundColor={lightBackgroundColor}
-    darkBackgroundColor={darkBackgroundColor}
-    lightTextColor={lightTextColor}
-    darkTextColor={darkTextColor}
-  >
+  <CalculatorButton class="retry" type="retry" data-value="retry" {...props}>
     <RefreshIcon />{" "}<span style="font-weight: 500">Regenerate</span>
   </CalculatorButton>
-  <CalculatorButton
-    type="operator"
-    value="÷"
-    lightBackgroundColor={lightBackgroundColor}
-    darkBackgroundColor={darkBackgroundColor}
-    lightTextColor={lightTextColor}
-    darkTextColor={darkTextColor}
-  >
+  <CalculatorButton type="operator" data-value="÷" {...props}>
     <DivideIcon />
   </CalculatorButton>
-  <CalculatorButton
-    type="number"
-    value="7"
-    lightBackgroundColor={lightBackgroundColor}
-    darkBackgroundColor={darkBackgroundColor}
-    lightTextColor={lightTextColor}
-    darkTextColor={darkTextColor}
-  >
-    7
-  </CalculatorButton>
-  <CalculatorButton
-    type="number"
-    value="8"
-    lightBackgroundColor={lightBackgroundColor}
-    darkBackgroundColor={darkBackgroundColor}
-    lightTextColor={lightTextColor}
-    darkTextColor={darkTextColor}
-  >
-    8
-  </CalculatorButton>
-  <CalculatorButton
-    type="number"
-    value="9"
-    lightBackgroundColor={lightBackgroundColor}
-    darkBackgroundColor={darkBackgroundColor}
-    lightTextColor={lightTextColor}
-    darkTextColor={darkTextColor}
-  >
-    9
-  </CalculatorButton>
-  <CalculatorButton
-    type="operator"
-    value="×"
-    lightBackgroundColor={lightBackgroundColor}
-    darkBackgroundColor={darkBackgroundColor}
-    lightTextColor={lightTextColor}
-    darkTextColor={darkTextColor}
-  >
+  <CalculatorButton type="number" data-value="7" {...props}>7</CalculatorButton>
+  <CalculatorButton type="number" data-value="8" {...props}>8</CalculatorButton>
+  <CalculatorButton type="number" data-value="9" {...props}>9</CalculatorButton>
+  <CalculatorButton type="operator" data-value="×" {...props}>
     <MultiplyIcon />
   </CalculatorButton>
-  <CalculatorButton
-    type="number"
-    value="4"
-    lightBackgroundColor={lightBackgroundColor}
-    darkBackgroundColor={darkBackgroundColor}
-    lightTextColor={lightTextColor}
-    darkTextColor={darkTextColor}
-  >
-    4
-  </CalculatorButton>
-  <CalculatorButton
-    type="number"
-    value="5"
-    lightBackgroundColor={lightBackgroundColor}
-    darkBackgroundColor={darkBackgroundColor}
-    lightTextColor={lightTextColor}
-    darkTextColor={darkTextColor}
-  >
-    5
-  </CalculatorButton>
-  <CalculatorButton
-    type="number"
-    value="6"
-    lightBackgroundColor={lightBackgroundColor}
-    darkBackgroundColor={darkBackgroundColor}
-    lightTextColor={lightTextColor}
-    darkTextColor={darkTextColor}
-  >
-    6
-  </CalculatorButton>
-  <CalculatorButton
-    type="operator"
-    value="−"
-    lightBackgroundColor={lightBackgroundColor}
-    darkBackgroundColor={darkBackgroundColor}
-    lightTextColor={lightTextColor}
-    darkTextColor={darkTextColor}
-  >
+  <CalculatorButton type="number" data-value="4" {...props}>4</CalculatorButton>
+  <CalculatorButton type="number" data-value="5" {...props}>5</CalculatorButton>
+  <CalculatorButton type="number" data-value="6" {...props}>6</CalculatorButton>
+  <CalculatorButton type="operator" data-value="−" {...props}>
     <MinusIcon />
   </CalculatorButton>
-  <CalculatorButton
-    type="number"
-    value="1"
-    lightBackgroundColor={lightBackgroundColor}
-    darkBackgroundColor={darkBackgroundColor}
-    lightTextColor={lightTextColor}
-    darkTextColor={darkTextColor}
-  >
-    1
-  </CalculatorButton>
-  <CalculatorButton
-    type="number"
-    value="2"
-    lightBackgroundColor={lightBackgroundColor}
-    darkBackgroundColor={darkBackgroundColor}
-    lightTextColor={lightTextColor}
-    darkTextColor={darkTextColor}
-  >
-    2
-  </CalculatorButton>
-  <CalculatorButton
-    type="number"
-    value="3"
-    lightBackgroundColor={lightBackgroundColor}
-    darkBackgroundColor={darkBackgroundColor}
-    lightTextColor={lightTextColor}
-    darkTextColor={darkTextColor}
-  >
-    3
-  </CalculatorButton>
-  <CalculatorButton
-    type="operator"
-    value="+"
-    lightBackgroundColor={lightBackgroundColor}
-    darkBackgroundColor={darkBackgroundColor}
-    lightTextColor={lightTextColor}
-    darkTextColor={darkTextColor}
-  >
+  <CalculatorButton type="number" data-value="1" {...props}>1</CalculatorButton>
+  <CalculatorButton type="number" data-value="2" {...props}>2</CalculatorButton>
+  <CalculatorButton type="number" data-value="3" {...props}>3</CalculatorButton>
+  <CalculatorButton type="operator" data-value="+" {...props}>
     <PlusIcon />
   </CalculatorButton>
-  <CalculatorButton
-    type="number"
-    value="0"
-    lightBackgroundColor={lightBackgroundColor}
-    darkBackgroundColor={darkBackgroundColor}
-    lightTextColor={lightTextColor}
-    darkTextColor={darkTextColor}
-  >
-    0
-  </CalculatorButton>
-  <CalculatorButton
-    type="number"
-    value="."
-    lightBackgroundColor={lightBackgroundColor}
-    darkBackgroundColor={darkBackgroundColor}
-    lightTextColor={lightTextColor}
-    darkTextColor={darkTextColor}
-  >
+  <CalculatorButton type="number" data-value="0" {...props}>0</CalculatorButton>
+  <CalculatorButton type="number" data-value="." {...props}>
     <DotIcon />
   </CalculatorButton>
-  <CalculatorButton
-    type="number"
-    value="backspace"
-    lightBackgroundColor={lightBackgroundColor}
-    darkBackgroundColor={darkBackgroundColor}
-    lightTextColor={lightTextColor}
-    darkTextColor={darkTextColor}
-  >
+  <CalculatorButton type="number" data-value="backspace" {...props}>
     <BackspaceIcon />
   </CalculatorButton>
-  <CalculatorButton
-    type="equal"
-    value="="
-    lightBackgroundColor={lightBackgroundColor}
-    darkBackgroundColor={darkBackgroundColor}
-    lightTextColor={lightTextColor}
-    darkTextColor={darkTextColor}
-  >
+  <CalculatorButton type="equal" data-value="=" {...props}>
     <EqualIcon />
   </CalculatorButton>
 </div>
@@ -224,6 +65,7 @@ const {
 <style>
   .calculator-button-grid {
     width: var(--calculatorButtonGridWidth);
+    height: calc(var(--buttonSize) * 5 + var(--calculatorGap) * 4);
 
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -234,7 +76,7 @@ const {
     font-feature-settings: "tnum", "cv03", "cv04", "calt";
   }
 
-  .calculator-button-grid > .retry {
+  .calculator-button-grid > :global(.retry) {
     grid-area: 1 / 2 / 2 / 4;
   }
 </style>

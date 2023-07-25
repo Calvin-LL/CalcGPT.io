@@ -11,8 +11,6 @@ interface Props {
   lightTextColor: HexColor;
   darkTextColor: HexColor;
 
-  value?: string;
-
   class?: string;
   "class:list"?: string[];
 }
@@ -26,10 +24,10 @@ const {
   lightTextColor: globalLightTextColor,
   darkTextColor: globalDarkTextColor,
 
-  value,
-
   "class:list": classList = [],
   class: className = "",
+
+  ...props
 } = Astro.props;
 
 const colors = {
@@ -141,7 +139,7 @@ const lightDarkGradientColor = colorLuminance(darkGradientColor, 0.5);
 ---
 
 <button
-  data-value={value}
+  {...props}
   class:list={["calculator-button", type, ...classList, className]}
 >
   <slot />
@@ -169,6 +167,10 @@ const lightDarkGradientColor = colorLuminance(darkGradientColor, 0.5);
   .calculator-button {
     --fontSize: var(--textFontSizeOverride, calc(var(--buttonSize) / 2.3));
     --color: var(--lightTextColor);
+    --lightShadowColor: var(--lightLightShadowColor);
+    --darkShadowColor: var(--darkLightShadowColor);
+    --lightGradientColor: var(--lightLightGradientColor);
+    --darkGradientColor: var(--darkLightGradientColor);
 
     position: relative;
     z-index: 1;
@@ -186,19 +188,19 @@ const lightDarkGradientColor = colorLuminance(darkGradientColor, 0.5);
     border-radius: var(--buttonBorderRadius);
     box-shadow:
       var(--shadowOffset) var(--shadowOffset) var(--blurRadius)
-        var(--darkLightShadowColor),
+        var(--darkShadowColor),
       calc(var(--shadowOffset) * -1) calc(var(--shadowOffset) * -1)
-        var(--blurRadius) var(--lightLightShadowColor);
+        var(--blurRadius) var(--lightShadowColor);
 
     font-family: inherit;
     font-feature-settings: inherit;
     font-size: var(--fontSize);
-    color: var(--lightTextColor);
+    color: var(--color);
 
     background: linear-gradient(
       135deg,
-      var(--lightLightGradientColor),
-      var(--darkLightGradientColor)
+      var(--lightGradientColor),
+      var(--darkGradientColor)
     );
   }
 
@@ -214,8 +216,8 @@ const lightDarkGradientColor = colorLuminance(darkGradientColor, 0.5);
 
     background: linear-gradient(
       135deg,
-      var(--darkLightGradientColor),
-      var(--lightLightGradientColor)
+      var(--darkGradientColor),
+      var(--lightGradientColor)
     );
 
     border-radius: var(--buttonBorderRadius);
@@ -238,28 +240,10 @@ const lightDarkGradientColor = colorLuminance(darkGradientColor, 0.5);
   @media (prefers-color-scheme: dark) {
     .calculator-button {
       --color: var(--darkTextColor);
-
-      box-shadow:
-        var(--shadowOffset) var(--shadowOffset) var(--blurRadius)
-          var(--darkDarkShadowColor),
-        calc(var(--shadowOffset) * -1) calc(var(--shadowOffset) * -1)
-          var(--blurRadius) var(--lightDarkShadowColor);
-
-      background: linear-gradient(
-        135deg,
-        var(--lightDarkGradientColor),
-        var(--darkDarkGradientColor)
-      );
-
-      color: var(--darkTextColor);
-    }
-
-    .calculator-button::before {
-      background: linear-gradient(
-        135deg,
-        var(--darkDarkGradientColor),
-        var(--lightDarkGradientColor)
-      );
+      --lightShadowColor: var(--lightDarkShadowColor);
+      --darkShadowColor: var(--darkDarkShadowColor);
+      --lightGradientColor: var(--lightDarkGradientColor);
+      --darkGradientColor: var(--darkDarkGradientColor);
     }
   }
 </style>

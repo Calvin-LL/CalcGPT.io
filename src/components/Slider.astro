@@ -1,0 +1,224 @@
+---
+import { colorLuminance } from "../helpers";
+import cryptoRandomString from "crypto-random-string";
+
+interface Props {
+  label: string;
+  min: number;
+  max: number;
+  step: number;
+  value: number;
+}
+
+const { label, min, max, step, value } = Astro.props;
+const id = cryptoRandomString({ length: 4, type: "alphanumeric" });
+const labelId = `${id}-label`;
+
+const lightThumbShadowColor = "#e4f6fe";
+const lightThumbGradientColor = "#1E88E5";
+const lightThumbColorDifference = 0.15;
+
+const darkThumbShadowColor = "#07285a";
+const darkThumbGradientColor = "#1E88E5";
+const darkThumbColorDifference = 0.9;
+
+// light theme
+const darkLightThumbShadowColor = colorLuminance(
+  lightThumbShadowColor,
+  lightThumbColorDifference * -1,
+);
+const lightLightThumbShadowColor = colorLuminance(
+  lightThumbShadowColor,
+  lightThumbColorDifference,
+);
+
+const darkLightThumbGradientColor = colorLuminance(
+  lightThumbGradientColor,
+  -0.1,
+);
+const lightLightThumbGradientColor = colorLuminance(
+  lightThumbGradientColor,
+  0.07,
+);
+
+// dark theme
+const darkDarkThumbShadowColor = colorLuminance(
+  darkThumbShadowColor,
+  darkThumbColorDifference * -1,
+);
+const lightDarkThumbShadowColor = colorLuminance(
+  darkThumbShadowColor,
+  darkThumbColorDifference,
+);
+
+const darkDarkThumbGradientColor = colorLuminance(darkThumbGradientColor, -0.1);
+const lightDarkThumbGradientColor = colorLuminance(darkThumbGradientColor, 0.5);
+---
+
+<div id={id} class="slider">
+  <div class="top">
+    <label id={labelId}>{label}</label>
+    <input
+      type="number"
+      aria-labelledby={labelId}
+      min={min}
+      max={max}
+      step={step}
+      value={value}
+    />
+  </div>
+  <input
+    type="range"
+    aria-labelledby={labelId}
+    min={min}
+    max={max}
+    step={step}
+    value={value}
+  />
+</div>
+
+<script>
+  const sliders = document.getElementsByClassName("slider");
+
+  for (const slider of sliders) {
+    const sliderInput = slider.querySelector(
+      "input[type='range']",
+    ) as HTMLInputElement;
+    const numberInput = slider.querySelector(
+      "input[type='number']",
+    ) as HTMLInputElement;
+
+    numberInput.addEventListener("blur", () => {
+      numberInput.value = sliderInput.value;
+    });
+
+    numberInput.addEventListener("input", () => {
+      sliderInput.value = numberInput.value;
+    });
+
+    sliderInput.addEventListener("input", () => {
+      numberInput.value = sliderInput.value;
+    });
+  }
+</script>
+
+<style
+  define:vars={{
+    darkLightThumbShadowColor,
+    lightLightThumbShadowColor,
+    darkLightThumbGradientColor,
+    lightLightThumbGradientColor,
+
+    darkDarkThumbShadowColor,
+    lightDarkThumbShadowColor,
+    darkDarkThumbGradientColor,
+    lightDarkThumbGradientColor,
+  }}
+>
+  .slider {
+    --fontSize: calc(var(--buttonSize) / 4);
+
+    width: 100%;
+    margin-bottom: var(--calculatorGap);
+  }
+
+  .slider > .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: calc(var(--calculatorGap) / 2);
+  }
+
+  .slider > .top > label {
+    font-size: var(--fontSize);
+  }
+
+  .slider > .top > input[type="number"] {
+    --fontSize: calc(var(--buttonSize) / 6);
+    --height: calc(var(--fontSize) * 2.2);
+    --padding: calc(var(--fontSize) / 2);
+
+    font-size: var(--fontSize);
+    height: var(--height);
+    width: calc(var(--fontSize) * 4.2);
+    box-sizing: border-box;
+
+    margin: 0;
+    padding: 0;
+    outline: none;
+    border: none;
+    border-radius: calc(var(--height) / 4);
+    padding: var(--padding);
+
+    background-color: #fff;
+    color: var(--textColor);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .slider > .top > input[type="number"] {
+      background-color: #000;
+    }
+  }
+
+  .slider > input[type="range"] {
+    --trackHeight: calc(var(--buttonSize) / 3);
+    --lightThumbShadowColor: var(--lightLightThumbShadowColor);
+    --darkThumbShadowColor: var(--darkLightThumbShadowColor);
+    --lightThumbGradientColor: var(--lightLightThumbGradientColor);
+    --darkThumbGradientColor: var(--darkLightThumbGradientColor);
+
+    margin: 0;
+    padding: 0;
+    border: none;
+
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .slider > input[type="range"] {
+      --lightThumbShadowColor: var(--lightDarkThumbShadowColor);
+      --darkThumbShadowColor: var(--darkDarkThumbShadowColor);
+      --lightThumbGradientColor: var(--lightDarkThumbGradientColor);
+      --darkThumbGradientColor: var(--darkDarkThumbGradientColor);
+    }
+  }
+
+  .slider > input[type="range"]::-webkit-slider-runnable-track {
+    border-radius: calc(var(--trackHeight) / 2);
+    height: var(--trackHeight);
+
+    box-shadow:
+      inset var(--shadowOffset) var(--shadowOffset) var(--blurRadius)
+        var(--darkShadowColor),
+      inset calc(var(--shadowOffset) * -1) calc(var(--shadowOffset) * -1)
+        var(--blurRadius) var(--lightShadowColor);
+  }
+
+  .slider > input[type="range"]::-webkit-slider-thumb {
+    --thumbSize: calc(var(--trackHeight) * 0.9);
+
+    -webkit-appearance: none;
+    appearance: none;
+
+    height: var(--thumbSize);
+    width: var(--thumbSize);
+    margin-top: calc((var(--trackHeight) - var(--thumbSize)) / 2);
+    border-radius: calc(var(--thumbSize) / 2);
+
+    box-shadow:
+      var(--shadowOffset) 0 var(--blurRadius) var(--darkThumbShadowColor),
+      calc(var(--shadowOffset) * -1) 0 var(--blurRadius)
+        var(--lightThumbShadowColor);
+
+    background: linear-gradient(
+      135deg,
+      var(--lightThumbGradientColor),
+      var(--darkThumbGradientColor)
+    );
+  }
+</style>

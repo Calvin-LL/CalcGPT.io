@@ -4,22 +4,68 @@
 
 <div class="screen">
   <textarea id="math-input">1+1</textarea>
-  <input id="math-output" value="2" readonly />
+  <textarea id="math-output" readonly>2</textarea>
 </div>
+
+<script>
+  const mathInput = document.getElementById(
+    "math-input",
+  ) as HTMLTextAreaElement;
+  const mathOutput = document.getElementById("math-output") as HTMLInputElement;
+
+  mathInput.addEventListener("input", () => {
+    replaceCharacters(mathInput);
+    resizeTextAreaFont(mathInput);
+    mathOutput.value = "";
+  });
+
+  mathOutput.addEventListener("input", () => {
+    replaceCharacters(mathInput);
+    resizeTextAreaFont(mathInput);
+  });
+
+  function replaceCharacters(textarea: HTMLTextAreaElement) {
+    textarea.value = textarea.value
+      .replaceAll("/", "÷")
+      .replaceAll("*", "×")
+      .replaceAll("-", "−");
+  }
+
+  function resizeTextAreaFont(textarea: HTMLTextAreaElement) {
+    textarea.style.fontSize = "";
+
+    const height = textarea.clientHeight;
+    let scrollHeight = textarea.scrollHeight;
+    const fontSize = window
+      .getComputedStyle(textarea)
+      .getPropertyValue("--fontSize");
+    let scale = 1;
+
+    while (scrollHeight > height) {
+      scale -= 0.05;
+      textarea.style.fontSize = `calc(${scale} * ${fontSize})`;
+      scrollHeight = textarea.scrollHeight;
+    }
+  }
+</script>
 
 <style>
   .screen {
-    --screenHeight: calc(var(--buttonSize) * 2.5);
+    --screenPadding: calc(var(--buttonBorderRadius) / 2);
+    --fontSize: calc(var(--buttonSize) / 1.5);
+    --oneLineWithPadding: calc(1.2 * var(--fontSize) + var(--screenPadding));
+
+    flex-grow: 1;
 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: stretch;
 
-    height: var(--screenHeight);
+    min-height: calc(2 * var(--oneLineWithPadding));
     overflow: hidden;
     box-sizing: border-box;
-    margin-bottom: calc(var(--calculatorGap) * 2);
+    margin-bottom: calc(var(--calculatorGap));
     border-radius: var(--buttonBorderRadius);
     box-shadow:
       inset var(--shadowOffset) var(--shadowOffset) var(--blurRadius)
@@ -28,11 +74,9 @@
         var(--blurRadius) var(--lightShadowColor);
   }
 
-  .screen > textarea,
-  .screen > input {
-    --screenPadding: calc(var(--buttonBorderRadius) / 2);
-
+  .screen > textarea {
     width: 100%;
+    min-height: var(--oneLineWithPadding);
     box-sizing: border-box;
     margin: 0px;
     padding: var(--screenPadding);
@@ -42,7 +86,7 @@
     background: none;
     font-family: inherit;
     font-feature-settings: inherit;
-    font-size: calc(var(--buttonSize) / 1.5);
+    font-size: var(--fontSize);
     resize: none;
     overflow-x: hidden;
     overflow-y: auto;
@@ -60,6 +104,8 @@
   }
 
   #math-output {
+    height: var(--oneLineWithPadding);
+
     color: #1976d2;
 
     border-bottom-left-radius: calc(

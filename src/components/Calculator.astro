@@ -3,6 +3,7 @@ import { colorLuminance } from "../helpers";
 import type { HexColor } from "../types/CssColor";
 import CalculatorButtonGrid from "./CalculatorButtonGrid.astro";
 import CalculatorScreen from "./CalculatorScreen.astro";
+import Slider from "./Slider.astro";
 
 interface Props {
   lightBackgroundColor: HexColor;
@@ -44,6 +45,8 @@ const lightDarkShadowColor = colorLuminance(
 
 <div id="calculator" class="calculator standalone">
   <CalculatorScreen />
+  <Slider label="Temperature" min={0} max={2} step={0.1} value={1} />
+  <Slider label="Top P" min={0} max={1} step={0.1} value={1} />
   <CalculatorButtonGrid
     lightBackgroundColor={lightBackgroundColor}
     darkBackgroundColor={darkBackgroundColor}
@@ -61,8 +64,6 @@ const lightDarkShadowColor = colorLuminance(
   const buttons = calculator.getElementsByClassName(
     "calculator-button",
   ) as HTMLCollectionOf<HTMLButtonElement>;
-
-  mathInput.addEventListener("input", handleInputChange);
 
   for (const button of buttons) {
     button.addEventListener("click", () => handleClick(button));
@@ -92,14 +93,6 @@ const lightDarkShadowColor = colorLuminance(
     }
     mathInput.focus();
   }
-
-  function handleInputChange() {
-    mathInput.value = mathInput.value
-      .replaceAll("/", "÷")
-      .replaceAll("*", "×")
-      .replaceAll("-", "−");
-    mathOutput.value = "";
-  }
 </script>
 
 <style
@@ -127,7 +120,16 @@ const lightDarkShadowColor = colorLuminance(
     --shadowOffset: calc(var(--buttonSize) / 25);
     --blurRadius: calc(var(--shadowOffset) * 2);
 
+    --darkShadowColor: var(--darkLightShadowColor);
+    --lightShadowColor: var(--lightLightShadowColor);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+
     width: var(--calculatorWidth);
+    height: max(100vh, calc(848 / 400 * var(--calculatorWidth)));
     padding: var(--calculatorGap);
     box-sizing: border-box;
 
@@ -135,9 +137,6 @@ const lightDarkShadowColor = colorLuminance(
   }
 
   #calculator.standalone {
-    --darkShadowColor: var(--darkLightShadowColor);
-    --lightShadowColor: var(--lightLightShadowColor);
-
     border-radius: calc(var(--buttonBorderRadius) + var(--calculatorGap));
 
     box-shadow:
@@ -148,7 +147,7 @@ const lightDarkShadowColor = colorLuminance(
   }
 
   @media (prefers-color-scheme: dark) {
-    #calculator.standalone {
+    #calculator {
       --darkShadowColor: var(--darkDarkShadowColor);
       --lightShadowColor: var(--lightDarkShadowColor);
     }
