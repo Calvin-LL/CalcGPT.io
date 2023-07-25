@@ -1,0 +1,80 @@
+---
+import type { HexColor } from "../../types/CssColor";
+import Button from "./Button.astro";
+
+import BackspaceIcon from "../icons/BackspaceIcon.astro";
+import DivideIcon from "../icons/DivideIcon.astro";
+import DotIcon from "../icons/DotIcon.astro";
+import EqualIcon from "../icons/EqualIcon.astro";
+import MinusIcon from "../icons/MinusIcon.astro";
+import MultiplyIcon from "../icons/MultiplyIcon.astro";
+import PlusIcon from "../icons/PlusIcon.astro";
+import RefreshIcon from "../icons/RefreshIcon.astro";
+
+interface Props {
+  lightBackgroundColor: HexColor;
+  darkBackgroundColor: HexColor;
+
+  lightTextColor: HexColor;
+  darkTextColor: HexColor;
+}
+
+const { ...props } = Astro.props;
+---
+
+<div class="button-grid">
+  <Button type="clear" data-value="clear" {...props}>C</Button>
+  <Button class="retry" type="retry" data-value="retry" {...props}>
+    <RefreshIcon />{" "}<span style="font-weight: 500">Regenerate</span>
+  </Button>
+  <Button type="operator" data-value="÷" {...props}>
+    <DivideIcon />
+  </Button>
+  <Button type="number" data-value="7" {...props}>7</Button>
+  <Button type="number" data-value="8" {...props}>8</Button>
+  <Button type="number" data-value="9" {...props}>9</Button>
+  <Button type="operator" data-value="×" {...props}>
+    <MultiplyIcon />
+  </Button>
+  <Button type="number" data-value="4" {...props}>4</Button>
+  <Button type="number" data-value="5" {...props}>5</Button>
+  <Button type="number" data-value="6" {...props}>6</Button>
+  <Button type="operator" data-value="−" {...props}>
+    <MinusIcon />
+  </Button>
+  <Button type="number" data-value="1" {...props}>1</Button>
+  <Button type="number" data-value="2" {...props}>2</Button>
+  <Button type="number" data-value="3" {...props}>3</Button>
+  <Button type="operator" data-value="+" {...props}>
+    <PlusIcon />
+  </Button>
+  <Button type="number" data-value="0" {...props}>0</Button>
+  <Button type="number" data-value="." {...props}>
+    <DotIcon />
+  </Button>
+  <Button type="number" data-value="backspace" {...props}>
+    <BackspaceIcon />
+  </Button>
+  <Button type="equal" data-value="=" {...props}>
+    <EqualIcon />
+  </Button>
+</div>
+
+<style>
+  .button-grid {
+    width: var(--ButtonGridWidth);
+    height: calc(var(--buttonSize) * 5 + var(--calculatorGap) * 4);
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    grid-column-gap: var(--calculatorGap);
+    grid-row-gap: var(--calculatorGap);
+
+    font-feature-settings: "tnum", "cv03", "cv04", "calt";
+  }
+
+  .button-grid > :global(.retry) {
+    grid-area: 1 / 2 / 2 / 4;
+  }
+</style>
