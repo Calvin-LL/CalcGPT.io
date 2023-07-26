@@ -1,5 +1,5 @@
 ---
-import { colorLuminance } from "../../helpers";
+import GenericButton from "../Button.astro";
 import type { HexColor } from "../../types/CssColor";
 
 interface Props {
@@ -10,9 +10,6 @@ interface Props {
 
   lightTextColor: HexColor;
   darkTextColor: HexColor;
-
-  class?: string;
-  "class:list"?: string[];
 }
 
 const {
@@ -23,9 +20,6 @@ const {
 
   lightTextColor: globalLightTextColor,
   darkTextColor: globalDarkTextColor,
-
-  "class:list": classList = [],
-  class: className = "",
 
   ...props
 } = Astro.props;
@@ -105,18 +99,6 @@ const {
   colorDifference: lightColorDifference,
 } = colors["light"][type];
 
-const darkLightShadowColor = colorLuminance(
-  lightShadowColor,
-  lightColorDifference * -1,
-);
-const lightLightShadowColor = colorLuminance(
-  lightShadowColor,
-  lightColorDifference,
-);
-
-const darkLightGradientColor = colorLuminance(lightGradientColor, -0.1);
-const lightLightGradientColor = colorLuminance(lightGradientColor, 0.07);
-
 // dark theme
 const {
   shadowColor: darkShadowColor,
@@ -125,122 +107,23 @@ const {
   colorDifference: darkColorDifference,
 } = colors["dark"][type];
 
-const darkDarkShadowColor = colorLuminance(
-  darkShadowColor,
-  darkColorDifference * -1,
-);
-const lightDarkShadowColor = colorLuminance(
-  darkShadowColor,
-  darkColorDifference,
-);
-
-const darkDarkGradientColor = colorLuminance(darkGradientColor, -0.1);
-const lightDarkGradientColor = colorLuminance(darkGradientColor, 0.5);
+const textFontSizeOverride =
+  type === "retry" ? "calc(var(--buttonSize) / 4)" : undefined;
 ---
 
-<button {...props} class:list={["button", type, ...classList, className]}>
-  <slot />
-</button>
-
-<style
-  define:vars={{
-    darkLightShadowColor,
-    lightLightShadowColor,
-    darkLightGradientColor,
-    lightLightGradientColor,
-
-    darkDarkShadowColor,
-    lightDarkShadowColor,
-    darkDarkGradientColor,
-    lightDarkGradientColor,
-
-    darkTextColor,
+<GenericButton
+  {...props}
+  {...{
+    lightShadowColor,
+    lightGradientColor,
     lightTextColor,
-
-    textFontSizeOverride:
-      type === "retry" ? "calc(var(--buttonSize) / 4)" : undefined,
+    lightColorDifference,
+    darkShadowColor,
+    darkGradientColor,
+    darkTextColor,
+    darkColorDifference,
+    textFontSizeOverride,
   }}
 >
-  .button {
-    --fontSize: var(--textFontSizeOverride, calc(var(--buttonSize) / 2.3));
-    --color: var(--lightTextColor);
-    --lightShadowColor: var(--lightLightShadowColor);
-    --darkShadowColor: var(--darkLightShadowColor);
-    --lightGradientColor: var(--lightLightGradientColor);
-    --darkGradientColor: var(--darkLightGradientColor);
-
-    position: relative;
-    z-index: 1;
-
-    border: none;
-    padding: 0;
-    margin: 0;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    min-width: var(--buttonSize);
-    min-height: var(--buttonSize);
-    border-radius: var(--buttonBorderRadius);
-    box-shadow:
-      var(--shadowOffset) var(--shadowOffset) var(--blurRadius)
-        var(--darkShadowColor),
-      calc(var(--shadowOffset) * -1) calc(var(--shadowOffset) * -1)
-        var(--blurRadius) var(--lightShadowColor);
-
-    font-family: inherit;
-    font-feature-settings: inherit;
-    font-size: var(--fontSize);
-    color: var(--color);
-
-    background: linear-gradient(
-      135deg,
-      var(--lightGradientColor),
-      var(--darkGradientColor)
-    );
-  }
-
-  .button::before {
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-
-    content: "";
-
-    background: linear-gradient(
-      135deg,
-      var(--darkGradientColor),
-      var(--lightGradientColor)
-    );
-
-    border-radius: var(--buttonBorderRadius);
-
-    transition: opacity 150ms ease;
-
-    opacity: 0;
-  }
-
-  @media (hover: hover) {
-    .button:hover::before {
-      opacity: 0.5;
-    }
-  }
-
-  .button:active::before {
-    opacity: 1;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .button {
-      --color: var(--darkTextColor);
-      --lightShadowColor: var(--lightDarkShadowColor);
-      --darkShadowColor: var(--darkDarkShadowColor);
-      --lightGradientColor: var(--lightDarkGradientColor);
-      --darkGradientColor: var(--darkDarkGradientColor);
-    }
-  }
-</style>
+  <slot />
+</GenericButton>

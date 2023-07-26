@@ -24,7 +24,7 @@ const { ...props } = Astro.props;
 
 <div class="button-grid">
   <Button type="clear" data-value="clear" {...props}>C</Button>
-  <Button class="retry" type="retry" data-value="retry" {...props}>
+  <Button type="retry" data-value="retry" {...props}>
     <RefreshIcon />{" "}<span style="font-weight: 500">Regenerate</span>
   </Button>
   <Button type="operator" data-value="÷" {...props}>
@@ -62,7 +62,7 @@ const { ...props } = Astro.props;
 
 <style>
   .button-grid {
-    width: var(--ButtonGridWidth);
+    width: var(--buttonGridWidth);
     height: calc(var(--buttonSize) * 5 + var(--calculatorGap) * 4);
 
     display: grid;
@@ -74,7 +74,7 @@ const { ...props } = Astro.props;
     font-feature-settings: "tnum", "cv03", "cv04", "calt";
   }
 
-  .button-grid > :global(.retry) {
+  .button-grid > button[data-value="retry"] {
     grid-area: 1 / 2 / 2 / 4;
   }
 </style>
