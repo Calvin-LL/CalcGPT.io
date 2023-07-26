@@ -20,13 +20,36 @@ const {
   darkTextColor,
 } = Astro.props;
 
+const lightLinkColor = "#1565C0";
+const darkLinkColor = "#42A5F5";
+const lightVisitedLinkColor = "#5E35B1";
+const darkVisitedLinkColor = "#B39DDB";
+
 const backgroundColorStyleString = `
 :root {
-  --lightBackground: ${lightBackgroundColor};
-  --darkBackground: ${darkBackgroundColor};
-  --lightText: ${lightTextColor};
-  --darkText: ${darkTextColor};
-}`.trim();
+  --lightBackgroundColor: ${lightBackgroundColor};
+  --darkBackgroundColor: ${darkBackgroundColor};
+
+  --lightTextColor: ${lightTextColor};
+  --darkTextColor: ${darkTextColor};
+
+  --backgroundColor: ${lightBackgroundColor};
+  --textColor: ${lightTextColor};
+
+  --linkColor: ${lightLinkColor};
+  --visitedLinkColor: ${lightVisitedLinkColor};
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --backgroundColor: ${darkBackgroundColor};
+    --textColor: ${darkTextColor};
+
+    --linkColor: ${darkLinkColor};
+    --visitedLinkColor: ${darkVisitedLinkColor};
+  }
+}
+`.trim();
 ---
 
 <!DOCTYPE html>
@@ -49,19 +72,20 @@ const backgroundColorStyleString = `
 <style is:global>
   html {
     font-family: "Inter", system-ui, sans-serif;
-    background-color: var(--lightBackground);
-    color: var(--lightText);
-  }
-
-  @media (prefers-color-scheme: dark) {
-    html {
-      background-color: var(--darkBackground);
-      color: var(--darkText);
-    }
+    background-color: var(--backgroundColor);
+    color: var(--textColor);
   }
 
   body {
     margin: 0;
     padding: 0;
+  }
+
+  a {
+    color: var(--linkColor);
+  }
+
+  a:visited {
+    color: var(--visitedLinkColor);
   }
 </style>

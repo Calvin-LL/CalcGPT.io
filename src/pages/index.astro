@@ -1,12 +1,36 @@
 ---
+import { colorLuminance } from "../helpers";
 import Layout from "../layouts/Layout.astro";
 import Calculator from "../components/Calculator/Calculator.astro";
+import ModelSelector from "../components/ModelSelector/ModelSelector.astro";
 
 const lightBackgroundColor = "#ecf0f3";
 const darkBackgroundColor = "#02192b";
 
 const lightTextColor = "#081B2D";
 const darkTextColor = "#F4F9FD";
+
+// light theme
+const lightColorDifference = 0.15;
+const darkLightShadowColor = colorLuminance(
+  lightBackgroundColor,
+  lightColorDifference * -1,
+);
+const lightLightShadowColor = colorLuminance(
+  lightBackgroundColor,
+  lightColorDifference,
+);
+
+// dark theme
+const darkColorDifference = 0.9;
+const darkDarkShadowColor = colorLuminance(
+  darkBackgroundColor,
+  darkColorDifference * -1,
+);
+const lightDarkShadowColor = colorLuminance(
+  darkBackgroundColor,
+  darkColorDifference,
+);
 ---
 
 <Layout
@@ -17,6 +41,12 @@ const darkTextColor = "#F4F9FD";
   darkTextColor={darkTextColor}
 >
   <main>
+    <ModelSelector
+      lightBackgroundColor={lightBackgroundColor}
+      darkBackgroundColor={darkBackgroundColor}
+      lightTextColor={lightTextColor}
+      darkTextColor={darkTextColor}
+    />
     <Calculator
       lightBackgroundColor={lightBackgroundColor}
       darkBackgroundColor={darkBackgroundColor}
@@ -26,8 +56,37 @@ const darkTextColor = "#F4F9FD";
   </main>
 </Layout>
 
-<style>
+<style
+  define:vars={{
+    lightLightShadowColor,
+    darkLightShadowColor,
+
+    lightDarkShadowColor,
+    darkDarkShadowColor,
+  }}
+>
   main {
+    --calculatorWidth: 400px;
+    --calculatorGap: calc(var(--calculatorWidth) / 25);
+
+    --buttonGridWidth: calc(var(--calculatorWidth) - var(--calculatorGap) * 2);
+
+    --buttonSize: calc((var(--buttonGridWidth) - var(--calculatorGap) * 3) / 4);
+    --buttonBorderRadius: calc(var(--buttonSize) / 2);
+
+    --shadowOffset: calc(var(--buttonSize) / 25);
+    --blurRadius: calc(var(--shadowOffset) * 2);
+
+    --darkShadowColor: var(--darkLightShadowColor);
+    --lightShadowColor: var(--lightLightShadowColor);
+
     margin: auto;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    main {
+      --darkShadowColor: var(--darkDarkShadowColor);
+      --lightShadowColor: var(--lightDarkShadowColor);
+    }
   }
 </style>
