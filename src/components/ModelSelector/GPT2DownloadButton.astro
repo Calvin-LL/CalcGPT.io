@@ -1,0 +1,95 @@
+---
+import type { HexColor } from "../../types/CssColor";
+import Button from "../Button.astro";
+import ProgressBar from "./ProgressBar.astro";
+
+interface Props {
+  lightBackgroundColor: HexColor;
+  darkBackgroundColor: HexColor;
+
+  lightTextColor: HexColor;
+  darkTextColor: HexColor;
+}
+
+const {
+  lightBackgroundColor,
+  darkBackgroundColor,
+  lightTextColor,
+  darkTextColor,
+  ...props
+} = Astro.props;
+
+const textFontSizeOverride = "calc(var(--buttonSize) / 4)";
+---
+
+<div class="download-area">
+  <Button
+    lightShadowColor="#e4f6fe"
+    lightGradientColor="#1E88E5"
+    lightTextColor={darkTextColor}
+    lightColorDifference={0.15}
+    darkShadowColor="#07285a"
+    darkGradientColor="#1E88E5"
+    darkTextColor={darkTextColor}
+    darkColorDifference={0.9}
+    textFontSizeOverride={textFontSizeOverride}
+  >
+    Download (652.3 MB)
+  </Button>
+  <Button
+    lightShadowColor={lightBackgroundColor}
+    lightGradientColor={lightBackgroundColor}
+    lightTextColor={lightTextColor}
+    lightColorDifference={0.15}
+    darkShadowColor={darkBackgroundColor}
+    darkGradientColor={darkBackgroundColor}
+    darkTextColor={darkTextColor}
+    darkColorDifference={0.9}
+    textFontSizeOverride={textFontSizeOverride}
+  >
+    Cancel
+  </Button>
+
+  <div class="progress-area">
+    <label for="file">Download progress:</label>
+    <div class="download-progress">
+      <span class="downloaded"></span>MB /652.3 MB
+    </div>
+    <ProgressBar id="file" />
+  </div>
+</div>
+
+<style>
+  div.download-area {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: calc(var(--buttonSize) * 0.2);
+    margin-top: calc(var(--buttonSize) * 0.2);
+  }
+
+  div.progress-area {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+  }
+
+  div.progress-area > label {
+    font-size: calc(var(--buttonSize) * 0.22);
+    margin-bottom: calc(var(--buttonSize) * 0.1);
+  }
+
+  div.progress-area > div.download-progress {
+    font-size: calc(var(--buttonSize) * 0.2);
+    margin-bottom: calc(var(--buttonSize) * 0.1);
+  }
+
+  div.progress-area > progress {
+    appearance: none;
+
+    height: calc(var(--buttonSize) * 0.2);
+    border-radius: calc(var(--buttonSize) * 0.1);
+  }
+</style>
