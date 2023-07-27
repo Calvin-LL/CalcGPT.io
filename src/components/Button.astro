@@ -1,4 +1,5 @@
 ---
+import type { AstroStyleAttributes } from "astro";
 import { colorLuminance } from "../helpers";
 import type { HexColor } from "../types/CssColor";
 
@@ -14,6 +15,9 @@ interface Props {
   darkColorDifference: number;
 
   textFontSizeOverride?: string;
+  small?: boolean;
+
+  id?: string;
 }
 
 const {
@@ -28,6 +32,7 @@ const {
   darkColorDifference,
 
   textFontSizeOverride,
+  small,
 
   ...props
 } = Astro.props;
@@ -59,7 +64,8 @@ const darkDarkGradientColor = colorLuminance(darkGradientColor, -0.1);
 const lightDarkGradientColor = colorLuminance(darkGradientColor, 0.5);
 ---
 
-<button {...props}>
+<!-- waiting for https://github.com/withastro/astro/issues/7747 to make small a class -->
+<button {...props} data-small={small}>
   <slot />
 </button>
 
@@ -122,6 +128,13 @@ const lightDarkGradientColor = colorLuminance(darkGradientColor, 0.5);
       var(--lightGradientColor),
       var(--darkGradientColor)
     );
+  }
+
+  button[data-small] {
+    --fontSize: var(--textFontSizeOverride, calc(var(--buttonSize) / 4));
+
+    min-width: calc(var(--buttonSize) * 0.75);
+    min-height: calc(var(--buttonSize) * 0.75);
   }
 
   button::before {

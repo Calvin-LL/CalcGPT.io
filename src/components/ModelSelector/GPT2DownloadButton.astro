@@ -16,14 +16,24 @@ const {
   darkBackgroundColor,
   lightTextColor,
   darkTextColor,
-  ...props
 } = Astro.props;
-
-const textFontSizeOverride = "calc(var(--buttonSize) / 4)";
 ---
 
 <div class="download-area">
+  <div id="download-unsupported">
+    Your browser does not support <a
+      href="https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API"
+      target="_blank"
+      rel="noopener noreferrer">WebGPU API</a
+    >. Use a <a
+      href="https://caniuse.com/webgpu"
+      target="_blank"
+      rel="noopener noreferrer">supported browser</a
+    > instead.
+  </div>
+
   <Button
+    id="download-button"
     lightShadowColor="#e4f6fe"
     lightGradientColor="#1E88E5"
     lightTextColor={darkTextColor}
@@ -32,11 +42,12 @@ const textFontSizeOverride = "calc(var(--buttonSize) / 4)";
     darkGradientColor="#1E88E5"
     darkTextColor={darkTextColor}
     darkColorDifference={0.9}
-    textFontSizeOverride={textFontSizeOverride}
+    small
   >
-    Download (652.3 MB)
+    Download (476.13 MB)
   </Button>
   <Button
+    id="cancel-button"
     lightShadowColor={lightBackgroundColor}
     lightGradientColor={lightBackgroundColor}
     lightTextColor={lightTextColor}
@@ -45,19 +56,111 @@ const textFontSizeOverride = "calc(var(--buttonSize) / 4)";
     darkGradientColor={darkBackgroundColor}
     darkTextColor={darkTextColor}
     darkColorDifference={0.9}
-    textFontSizeOverride={textFontSizeOverride}
+    small
   >
     Cancel
   </Button>
 
-  <div class="progress-area">
-    <label for="file">Download progress:</label>
+  <div id="progress-area">
+    <label for="download-progress">Download progress:</label>
     <div class="download-progress">
-      <span class="downloaded"></span>MB /652.3 MB
+      <span class="downloaded"></span>MB /476.13 MB
     </div>
-    <ProgressBar id="file" />
+    <ProgressBar id="download-progress" />
   </div>
 </div>
+
+<script>
+  import { CalcGPT2 } from "../../core/CalcGPT2";
+
+  declare global {
+    var calcGPT2: CalcGPT2;
+  }
+
+  const bytesInMB = 1024 * 1024;
+
+  const downloadUnsupported = document.getElementById(
+    "download-unsupported",
+  ) as HTMLDivElement;
+  const downloadButton = document.getElementById(
+    "download-button",
+  ) as HTMLButtonElement;
+  const cancelButton = document.getElementById(
+    "cancel-button",
+  ) as HTMLButtonElement;
+  const progressArea = document.getElementById(
+    "progress-area",
+  ) as HTMLDivElement;
+  const downloadedText =
+    progressArea.querySelector<HTMLSpanElement>("span.downloaded")!;
+  const progressBar = document.getElementById(
+    "download-progress",
+  ) as HTMLProgressElement;
+
+  if (!navigator.gpu) {
+    downloadUnsupported.style.display = "block";
+    downloadButton.style.display = "none";
+    cancelButton.style.display = "none";
+    progressArea.style.display = "none";
+  } else {
+    function updateProgress(downloadedSize: number, fraction: number) {
+      downloadedText.textContent = (downloadedSize / bytesInMB).toFixed(2);
+      progressBar.value = fraction;
+    }
+
+    function idleToDownloading() {
+      downloadUnsupported.style.display = "none";
+      downloadButton.style.display = "none";
+      cancelButton.style.display = "block";
+      progressArea.style.display = "flex";
+      downloadedText.textContent = "0.00";
+      progressBar.value = 0;
+    }
+
+    function downloadingToIdle() {
+      downloadUnsupported.style.display = "none";
+      downloadButton.style.display = "block";
+      cancelButton.style.display = "none";
+      progressArea.style.display = "none";
+    }
+
+    function downloadingToDone() {
+      downloadUnsupported.style.display = "none";
+      downloadButton.style.display = "none";
+      cancelButton.style.display = "none";
+      progressArea.style.display = "none";
+    }
+
+    downloadingToIdle();
+
+    let downnloadAbortController: AbortController;
+
+    downloadButton.addEventListener("click", () => {
+      globalThis.calcGPT2 = new CalcGPT2();
+      const [promise, abortController] =
+        globalThis.calcGPT2.loadModel(updateProgress);
+
+      idleToDownloading();
+
+      downnloadAbortController = abortController;
+      promise.then(downloadingToDone).catch((e) => {
+        if ((e as DOMException).code === DOMException.ABORT_ERR) {
+          return;
+        }
+        console.error(e);
+        downloadingToIdle();
+        globalThis.calcGPT2.gpt.unloadBuffers();
+        alert("Download failed");
+      });
+    });
+
+    cancelButton.addEventListener("click", () => {
+      downnloadAbortController.abort();
+      downloadingToIdle();
+      globalThis.calcGPT2.gpt.unloadBuffers();
+    });
+  }
+</script>
 
 <style>
   div.download-area {
@@ -69,24 +172,39 @@ const textFontSizeOverride = "calc(var(--buttonSize) / 4)";
     margin-top: calc(var(--buttonSize) * 0.2);
   }
 
-  div.progress-area {
-    display: flex;
+  #download-unsupported {
+    display: none;
+    color: #b71c1c;
+  }
+
+  #cancel-button {
+    display: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    #download-unsupported {
+      color: #e57373;
+    }
+  }
+
+  #progress-area {
+    display: none;
     flex-direction: column;
     align-items: stretch;
     justify-content: center;
   }
 
-  div.progress-area > label {
+  #progress-area > label {
     font-size: calc(var(--buttonSize) * 0.22);
     margin-bottom: calc(var(--buttonSize) * 0.1);
   }
 
-  div.progress-area > div.download-progress {
+  #progress-area > div.download-progress {
     font-size: calc(var(--buttonSize) * 0.2);
     margin-bottom: calc(var(--buttonSize) * 0.1);
   }
 
-  div.progress-area > progress {
+  #progress-area > progress {
     appearance: none;
 
     height: calc(var(--buttonSize) * 0.2);

@@ -33,3 +33,11 @@ export function colorLuminance(hex: HexColor, lum: number): HexColor {
 
   return rgb;
 }
+
+export function mathToDisplayCharacters(s: string): string {
+  return s.replaceAll("/", "÷").replaceAll("*", "×").replaceAll("-", "−");
+}
+
+export function displayToMathCharacters(s: string): string {
+  return s.replaceAll("÷", "/").replaceAll("×", "*").replaceAll("−", "-");
+}

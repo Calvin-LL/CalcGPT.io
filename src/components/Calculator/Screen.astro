@@ -8,6 +8,8 @@
 </div>
 
 <script>
+  import { mathToDisplayCharacters } from "../../helpers";
+
   const mathInput = document.getElementById(
     "math-input",
   ) as HTMLTextAreaElement;
@@ -25,10 +27,7 @@
   });
 
   function replaceCharacters(textarea: HTMLTextAreaElement) {
-    textarea.value = textarea.value
-      .replaceAll("/", "÷")
-      .replaceAll("*", "×")
-      .replaceAll("-", "−");
+    textarea.value = mathToDisplayCharacters(textarea.value);
   }
 
   function resizeTextAreaFont(textarea: HTMLTextAreaElement) {
