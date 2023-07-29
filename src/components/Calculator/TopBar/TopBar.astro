@@ -1,0 +1,76 @@
+---
+import type { HexColor } from "../../../types/CssColor";
+import Button from "../../Button.astro";
+import Logo from "./Logo.astro";
+
+interface Props {
+  lightBackgroundColor: HexColor;
+  darkBackgroundColor: HexColor;
+
+  lightTextColor: HexColor;
+  darkTextColor: HexColor;
+}
+
+const {
+  lightBackgroundColor,
+  darkBackgroundColor,
+  lightTextColor,
+  darkTextColor,
+} = Astro.props;
+---
+
+<div class="top-bar">
+  <div class="left">
+    <Logo class="logo" />
+    <span>CalcGPT</span>
+  </div>
+  <Button
+    class="gpt-button"
+    lightShadowColor={lightBackgroundColor}
+    lightGradientColor={lightBackgroundColor}
+    lightTextColor={lightTextColor}
+    lightColorDifference={0.15}
+    darkShadowColor={darkBackgroundColor}
+    darkGradientColor={darkBackgroundColor}
+    darkTextColor={darkTextColor}
+    darkColorDifference={0.9}
+    mini
+    padding
+  />
+</div>
+
+<script>
+  import { openModelSelectorOverlay } from "../ModelSelectorOverlay/helpers";
+
+  const calculator = document.getElementById("calculator") as HTMLDivElement;
+  const gptButton = calculator.querySelector<HTMLButtonElement>(".gpt-button")!;
+
+  gptButton.addEventListener("click", () => {
+    openModelSelectorOverlay();
+  });
+</script>
+
+<style>
+  .top-bar {
+    margin: var(--calculatorGap);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    > .left {
+      display: flex;
+      align-items: center;
+
+      > .logo {
+        height: calc(var(--buttonSize) * 0.4);
+      }
+
+      > span {
+        font-size: calc(var(--buttonSize) * 0.4);
+        font-weight: 700;
+        margin-left: 0.5rem;
+      }
+    }
+  }
+</style>

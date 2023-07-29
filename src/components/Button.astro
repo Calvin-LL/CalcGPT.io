@@ -1,5 +1,5 @@
 ---
-import type { AstroStyleAttributes } from "astro";
+import type { AstroBuiltinAttributes } from "astro";
 import { colorLuminance } from "../helpers";
 import type { HexColor } from "../types/CssColor";
 
@@ -15,9 +15,16 @@ interface Props {
   darkColorDifference: number;
 
   textFontSizeOverride?: string;
-  small?: boolean;
+
+  class?: string;
+  "class:list"?: AstroBuiltinAttributes["class:list"];
 
   id?: string;
+  small?: boolean;
+  mini?: boolean;
+
+  disabled?: boolean;
+  padding?: boolean;
 }
 
 const {
@@ -32,7 +39,15 @@ const {
   darkColorDifference,
 
   textFontSizeOverride,
-  small,
+
+  class: className,
+  "class:list": classList,
+
+  small = false,
+  mini = false,
+
+  disabled = false,
+  padding = false,
 
   ...props
 } = Astro.props;
@@ -64,8 +79,11 @@ const darkDarkGradientColor = colorLuminance(darkGradientColor, -0.1);
 const lightDarkGradientColor = colorLuminance(darkGradientColor, 0.5);
 ---
 
-<!-- waiting for https://github.com/withastro/astro/issues/7747 to make small a class -->
-<button {...props} data-small={small}>
+<button
+  {...props}
+  class:list={[{ small, mini, padding }, className, classList]}
+  disabled={disabled}
+>
   <slot />
 </button>
 
@@ -94,6 +112,14 @@ const lightDarkGradientColor = colorLuminance(darkGradientColor, 0.5);
     --darkShadowColor: var(--darkLightShadowColor);
     --lightGradientColor: var(--lightLightGradientColor);
     --darkGradientColor: var(--darkLightGradientColor);
+
+    @media (prefers-color-scheme: dark) {
+      --color: var(--darkTextColor);
+      --lightShadowColor: var(--lightDarkShadowColor);
+      --darkShadowColor: var(--darkDarkShadowColor);
+      --lightGradientColor: var(--lightDarkGradientColor);
+      --darkGradientColor: var(--darkDarkGradientColor);
+    }
 
     position: relative;
     z-index: 1;
@@ -128,55 +154,75 @@ const lightDarkGradientColor = colorLuminance(darkGradientColor, 0.5);
       var(--lightGradientColor),
       var(--darkGradientColor)
     );
-  }
 
-  button[data-small] {
-    --fontSize: var(--textFontSizeOverride, calc(var(--buttonSize) / 4));
+    transition-property: box-shadow, opacity;
+    transition-duration: 150ms;
+    transition-timing-function: ease;
 
-    min-width: calc(var(--buttonSize) * 0.75);
-    min-height: calc(var(--buttonSize) * 0.75);
-  }
+    &.small {
+      --fontSize: var(--textFontSizeOverride, calc(var(--buttonSize) / 4));
+      --minSize: calc(var(--buttonSize) * 0.75);
 
-  button::before {
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+      min-width: var(--minSize);
+      min-height: var(--minSize);
+    }
 
-    content: "";
+    &.mini {
+      --fontSize: var(--textFontSizeOverride, calc(var(--buttonSize) / 4));
+      --minSize: calc(var(--buttonSize) * 0.5);
 
-    background: linear-gradient(
-      135deg,
-      var(--darkGradientColor),
-      var(--lightGradientColor)
-    );
+      min-width: var(--minSize);
+      min-height: var(--minSize);
+    }
 
-    border-radius: var(--buttonBorderRadius);
+    &.padding {
+      padding-left: calc(var(--minSize) / 2);
+      padding-right: calc(var(--minSize) / 2);
+    }
 
-    transition: opacity 150ms ease;
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+      box-shadow: none;
+    }
 
-    opacity: 0;
-  }
+    &::before {
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
 
-  @media (hover: hover) {
-    button:hover::before {
+      content: "";
+
+      background: linear-gradient(
+        135deg,
+        var(--darkGradientColor),
+        var(--lightGradientColor)
+      );
+
+      border-radius: var(--buttonBorderRadius);
+
+      transition: opacity 150ms ease;
+
+      opacity: 0;
+    }
+
+    &:disabled::before {
       opacity: 0.5;
     }
-  }
 
-  button:active::before {
-    opacity: 1;
-  }
+    &:not(:disabled) {
+      @media (hover: hover) {
+        &:hover::before {
+          opacity: 0.5;
+        }
+      }
 
-  @media (prefers-color-scheme: dark) {
-    button {
-      --color: var(--darkTextColor);
-      --lightShadowColor: var(--lightDarkShadowColor);
-      --darkShadowColor: var(--darkDarkShadowColor);
-      --lightGradientColor: var(--lightDarkGradientColor);
-      --darkGradientColor: var(--darkDarkGradientColor);
+      &:active::before {
+        opacity: 1;
+      }
     }
   }
 </style>

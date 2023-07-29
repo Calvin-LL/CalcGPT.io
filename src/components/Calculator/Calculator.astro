@@ -1,9 +1,10 @@
 ---
-import { colorLuminance } from "../../helpers";
 import type { HexColor } from "../../types/CssColor";
+import ModelSelectorOverlay from "./ModelSelectorOverlay/ModelSelectorOverlay.astro";
 import ButtonGrid from "./ButtonGrid.astro";
 import Screen from "./Screen.astro";
 import Slider from "./Slider.astro";
+import TopBar from "./TopBar/TopBar.astro";
 
 interface Props {
   lightBackgroundColor: HexColor;
@@ -17,20 +18,25 @@ const { ...props } = Astro.props;
 ---
 
 <div id="calculator" class="calculator standalone">
-  <Screen />
-  <Slider label="Temperature" min={0} max={2} step={0.1} value={1} />
-  <Slider label="Top P" min={0} max={1} step={0.1} value={1} />
-  <ButtonGrid {...props} />
+  <ModelSelectorOverlay {...props} class="overlay" />
+  <div class="content" aria-hidden="true" inert>
+    <TopBar {...props} />
+    <Slider label="Temperature" min={0} max={2} step={0.1} value={1} />
+    <Slider label="Top P" min={0} max={1} step={0.05} value={1} />
+    <Screen />
+    <ButtonGrid {...props} />
+  </div>
 </div>
 
 <script>
   const calculator = document.getElementById("calculator")!;
+  const content = calculator.querySelector(".content")!;
   const mathInput = document.getElementById(
     "math-input",
   ) as HTMLTextAreaElement;
   const mathOutput = document.getElementById("math-output") as HTMLInputElement;
-  const buttons = calculator.getElementsByClassName(
-    "button",
+  const buttons = content.getElementsByClassName(
+    "calc-button",
   ) as HTMLCollectionOf<HTMLButtonElement>;
 
   for (const button of buttons) {
@@ -65,27 +71,50 @@ const { ...props } = Astro.props;
 
 <style>
   #calculator {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch;
+    --calculatorWidth: 400px;
+    --borderRadius: calc(var(--buttonBorderRadius) + var(--calculatorGap));
+    --calculatorGap: calc(var(--calculatorWidth) / 25);
+
+    --buttonGridWidth: calc(var(--calculatorWidth) - var(--calculatorGap) * 2);
+
+    --buttonSize: calc((var(--buttonGridWidth) - var(--calculatorGap) * 3) / 4);
+    --buttonBorderRadius: calc(var(--buttonSize) / 2);
+
+    --shadowOffset: calc(var(--buttonSize) / 25);
+    --blurRadius: calc(var(--shadowOffset) * 2);
+
+    position: relative;
 
     width: var(--calculatorWidth);
-    height: max(100vh, calc(848 / 400 * var(--calculatorWidth)));
+    height: max(100vh, calc(920 / 400 * var(--calculatorWidth)));
     margin: auto;
     padding: var(--calculatorGap);
     box-sizing: border-box;
 
     font-feature-settings: "tnum", "cv03", "cv04", "calt";
-  }
 
-  #calculator.standalone {
-    border-radius: calc(var(--buttonBorderRadius) + var(--calculatorGap));
+    &.standalone {
+      border-radius: var(--borderRadius);
 
-    box-shadow:
-      var(--shadowOffset) var(--shadowOffset) var(--blurRadius)
-        var(--darkShadowColor),
-      calc(var(--shadowOffset) * -1) calc(var(--shadowOffset) * -1)
-        var(--blurRadius) var(--lightShadowColor);
+      box-shadow:
+        var(--shadowOffset) var(--shadowOffset) var(--blurRadius)
+          var(--darkShadowColor),
+        calc(var(--shadowOffset) * -1) calc(var(--shadowOffset) * -1)
+          var(--blurRadius) var(--lightShadowColor);
+
+      & > .overlay {
+        border-radius: var(--borderRadius);
+      }
+    }
+
+    & > div.content {
+      width: 100%;
+      height: 100%;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: stretch;
+    }
   }
 </style>

@@ -1,0 +1,222 @@
+---
+import type { HexColor } from "../../../types/CssColor";
+
+interface Props {
+  lightBackgroundColor: HexColor;
+  darkBackgroundColor: HexColor;
+
+  lightTextColor: HexColor;
+  darkTextColor: HexColor;
+
+  name: string;
+  value: string;
+  checked?: boolean;
+  disabled?: boolean;
+}
+
+const { name, value, checked = false, disabled = false } = Astro.props;
+---
+
+<div class="model-option" class:list={[{ disabled }]}>
+  <label>
+    <span>{value}</span>
+    <input
+      type="radio"
+      name={name}
+      value={value}
+      checked={checked}
+      disabled={disabled}
+    />
+  </label>
+  <div>
+    <slot />
+  </div>
+</div>
+
+<script>
+  const calculator = document.querySelector<HTMLDivElement>("#calculator")!;
+  const overlay = document.querySelector<HTMLDivElement>(".overlay")!;
+  const closeButton = document.getElementById(
+    "close-model-selector-button",
+  ) as HTMLButtonElement;
+  // add checked class to div.model-option if input is checked
+  // and remove checked class if input is not checked
+  const inputs = overlay.querySelectorAll<HTMLInputElement>(
+    "div.model-option > label > input",
+  );
+
+  // check the child input if the div.model-option is clicked
+  const modelOptions =
+    overlay.querySelectorAll<HTMLDivElement>("div.model-option");
+
+  for (const modelOption of modelOptions) {
+    modelOption.addEventListener("click", (event: MouseEvent) => {
+      if (
+        ["button", "a"].includes(
+          (event.target as HTMLElement).tagName.toLowerCase(),
+        ) ||
+        ((event.target as HTMLElement).tagName.toLowerCase() === "input" &&
+          (event.target as HTMLInputElement).type !== "radio")
+      ) {
+        return;
+      }
+
+      if (modelOption.classList.contains("disabled")) {
+        // shake any child with the class "shake-on-disabled"
+        const shakeOnDisabledElements =
+          modelOption.querySelectorAll<HTMLElement>(".shake-on-disabled");
+
+        for (const element of shakeOnDisabledElements) {
+          element.addEventListener("animationend", () => {
+            element.style.animation = "";
+          });
+          element.style.animation = "horizontal-shaking 500ms linear";
+        }
+
+        return;
+      }
+
+      const input =
+        modelOption.querySelector<HTMLInputElement>("label > input")!;
+
+      input.checked = true;
+
+      updateAllRadioInput();
+      updateGPTButton(input.value);
+      closeButton.disabled = false;
+    });
+  }
+
+  updateAllRadioInput();
+
+  for (const input of inputs) {
+    input.addEventListener("change", () => {
+      updateAllRadioInput();
+      updateGPTButton(input.value);
+      closeButton.disabled = false;
+    });
+  }
+
+  // have to update every input because only one element emits change event
+  function updateAllRadioInput() {
+    for (const input of inputs) {
+      handleRadioChange(input);
+    }
+  }
+
+  function handleRadioChange(input: HTMLInputElement) {
+    const modelOption = input.closest("div.model-option")!;
+
+    if (input.checked) {
+      modelOption.classList.add("checked");
+    } else {
+      modelOption.classList.remove("checked");
+    }
+  }
+
+  function updateGPTButton(value: string) {
+    const gptButton =
+      calculator.querySelector<HTMLButtonElement>("button.gpt-button")!;
+
+    gptButton.textContent = value;
+  }
+</script>
+
+<style>
+  div.model-option {
+    --borderColor: rgba(0, 0, 0, 0.05);
+    --selectedColor: #1e88e5;
+
+    cursor: pointer;
+
+    position: relative;
+
+    padding: var(--margin);
+    overflow: hidden;
+    box-sizing: border-box;
+
+    border-width: calc(var(--buttonSize) / 25);
+    border-style: solid;
+    border-color: var(--borderColor);
+    border-radius: var(--borderRadius);
+
+    margin-top: calc(var(--margin) / 3);
+
+    transition: all 150ms ease;
+
+    @media (prefers-color-scheme: dark) {
+      --borderColor: rgba(255, 255, 255, 0.1);
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--borderColor);
+      }
+    }
+
+    &.checked {
+      border-color: var(--selectedColor);
+    }
+
+    > label {
+      cursor: pointer;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      > span {
+        font-size: calc(var(--buttonSize) / 3.5);
+        font-weight: 700;
+      }
+
+      > input {
+        --borderColor: #999;
+
+        appearance: none;
+
+        cursor: pointer;
+        pointer-events: none;
+
+        border-radius: 50%;
+        width: calc(var(--buttonSize) / 3);
+        height: calc(var(--buttonSize) / 3);
+
+        border-width: calc(var(--buttonSize) / 25);
+        border-style: solid;
+        border-color: var(--borderColor);
+        transition: all 150ms ease;
+
+        &:checked {
+          --borderColor: var(--selectedColor);
+
+          border-width: calc(var(--buttonSize) / 9);
+        }
+
+        &:focus-visible {
+          outline-color: orange;
+        }
+      }
+    }
+  }
+
+  @keyframes horizontal-shaking {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+      transform: translateX(-2%);
+    }
+    20%,
+    40%,
+    60%,
+    80% {
+      transform: translateX(2%);
+    }
+  }
+</style>

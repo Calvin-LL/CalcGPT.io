@@ -1,6 +1,6 @@
 ---
-import type { HexColor } from "../../types/CssColor";
-import Button from "../Button.astro";
+import type { HexColor } from "../../../types/CssColor";
+import Button from "../../Button.astro";
 import ProgressBar from "./ProgressBar.astro";
 
 interface Props {
@@ -34,6 +34,7 @@ const {
 
   <Button
     id="download-button"
+    class="shake-on-disabled"
     lightShadowColor="#e4f6fe"
     lightGradientColor="#1E88E5"
     lightTextColor={darkTextColor}
@@ -71,7 +72,8 @@ const {
 </div>
 
 <script>
-  import { CalcGPT2 } from "../../core/CalcGPT2";
+  import { CalcGPT2 } from "../../../core/CalcGPT2";
+  import { selectParentOption } from "./helpers";
 
   declare global {
     var calcGPT2: CalcGPT2;
@@ -143,15 +145,20 @@ const {
       idleToDownloading();
 
       downnloadAbortController = abortController;
-      promise.then(downloadingToDone).catch((e) => {
-        if ((e as DOMException).code === DOMException.ABORT_ERR) {
-          return;
-        }
-        console.error(e);
-        downloadingToIdle();
-        globalThis.calcGPT2.gpt.unloadBuffers();
-        alert("Download failed");
-      });
+      promise
+        .then(() => {
+          downloadingToDone();
+          selectParentOption(downloadButton);
+        })
+        .catch((e) => {
+          if ((e as DOMException).code === DOMException.ABORT_ERR) {
+            return;
+          }
+          console.error(e);
+          downloadingToIdle();
+          globalThis.calcGPT2.gpt.unloadBuffers();
+          alert("Download failed");
+        });
     });
 
     cancelButton.addEventListener("click", () => {
@@ -175,6 +182,10 @@ const {
   #download-unsupported {
     display: none;
     color: #b71c1c;
+  }
+
+  #download-button:focus-visible {
+    outline-color: orange;
   }
 
   #cancel-button {

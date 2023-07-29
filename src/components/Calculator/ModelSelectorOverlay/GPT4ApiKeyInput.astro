@@ -1,0 +1,70 @@
+---
+interface Props {
+  placeholder?: string;
+}
+
+const { ...props } = Astro.props;
+---
+
+<input
+  id="openai-api-token-input"
+  class="shake-on-disabled"
+  type="text"
+  {...props}
+/>
+
+<script>
+  import { CalcGPT4 } from "../../../core/CalcGPT4";
+  import { selectParentOption, disableParentOption } from "./helpers";
+
+  declare global {
+    var calcGPT4: CalcGPT4;
+  }
+
+  const input = document.getElementById(
+    "openai-api-token-input",
+  ) as HTMLInputElement;
+
+  input.addEventListener("input", () => {
+    globalThis.calcGPT4 = new CalcGPT4(input.value);
+
+    if (input.value.length === 0) {
+      disableParentOption(input);
+    } else {
+      selectParentOption(input);
+    }
+  });
+</script>
+
+<style>
+  input {
+    --borderRadius: calc(var(--buttonSize) / 4);
+
+    appearance: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+
+    border-width: calc(var(--buttonSize) * 0.02);
+    border-style: solid;
+    border-color: #ccc;
+
+    margin-top: calc(var(--buttonSize) * 0.2);
+    padding-left: calc(var(--borderRadius) * 0.75);
+    padding-right: calc(var(--borderRadius) * 0.75);
+
+    box-sizing: border-box;
+    height: calc(var(--buttonSize) / 2);
+    width: 100%;
+    border-radius: var(--borderRadius);
+    font-size: calc(var(--buttonSize) * 0.2);
+  }
+
+  input:focus {
+    outline-color: #1e88e5;
+  }
+
+  input::caret {
+    color: black;
+  }
+</style>
