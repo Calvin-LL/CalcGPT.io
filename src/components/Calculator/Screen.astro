@@ -3,48 +3,65 @@
 ---
 
 <div class="screen">
-  <textarea id="math-input">1+1</textarea>
-  <textarea id="math-output" readonly>2</textarea>
+  <textarea id="math-input"></textarea>
+  <div id="math-output-container-container">
+    <div id="math-output-container">
+      <div id="math-output"></div>
+    </div>
+  </div>
 </div>
 
 <script>
   import { mathToDisplayCharacters } from "../../helpers";
+  import { predictAnswer } from "./helpers";
 
   const mathInput = document.getElementById(
     "math-input",
   ) as HTMLTextAreaElement;
-  const mathOutput = document.getElementById("math-output") as HTMLInputElement;
+  const mathOutputContainerContainer = document.getElementById(
+    "math-output-container-container",
+  ) as HTMLDivElement;
+  const mathOutput = document.getElementById("math-output") as HTMLDivElement;
+
+  mathInput.addEventListener("keydown", (e) => {
+    if (e.key == "Enter") {
+      e.preventDefault();
+      predictAnswer();
+    }
+  });
 
   mathInput.addEventListener("input", () => {
-    replaceCharacters(mathInput);
-    resizeTextAreaFont(mathInput);
-    mathOutput.value = "";
+    mathInput.value = mathToDisplayCharacters(mathInput.value);
+    resizeElFont(mathInput);
+    mathOutput.innerText = "";
   });
 
-  mathOutput.addEventListener("input", () => {
-    replaceCharacters(mathInput);
-    resizeTextAreaFont(mathInput);
+  const observer = new MutationObserver(() => {
+    const newText = mathToDisplayCharacters(mathOutput.innerText);
+    if (mathOutput.innerText != newText) {
+      mathOutput.innerText = newText;
+    }
+    resizeElFont(mathOutputContainerContainer);
+  });
+  observer.observe(mathOutput, {
+    childList: true,
   });
 
-  function replaceCharacters(textarea: HTMLTextAreaElement) {
-    textarea.value = mathToDisplayCharacters(textarea.value);
-  }
+  function resizeElFont(el: HTMLElement) {
+    el.style.fontSize = "";
 
-  function resizeTextAreaFont(textarea: HTMLTextAreaElement) {
-    textarea.style.fontSize = "";
-
-    const height = textarea.clientHeight;
-    let scrollHeight = textarea.scrollHeight;
-    const fontSize = window
-      .getComputedStyle(textarea)
-      .getPropertyValue("--fontSize");
+    const height = el.clientHeight;
+    let scrollHeight = el.scrollHeight;
+    const fontSize = window.getComputedStyle(el).getPropertyValue("--fontSize");
     let scale = 1;
 
-    while (scrollHeight > height) {
-      scale -= 0.05;
-      textarea.style.fontSize = `calc(${scale} * ${fontSize})`;
-      scrollHeight = textarea.scrollHeight;
+    while (scrollHeight > height && scale > 0.4) {
+      scale -= 0.01;
+      el.style.fontSize = `calc(${scale} * ${fontSize})`;
+      scrollHeight = el.scrollHeight;
     }
+
+    el.scrollTop = el.scrollHeight;
   }
 </script>
 
@@ -73,7 +90,7 @@
         var(--blurRadius) var(--lightShadowColor);
   }
 
-  .screen > textarea {
+  .screen > * {
     width: 100%;
     min-height: var(--oneLineWithPadding);
     box-sizing: border-box;
@@ -102,10 +119,11 @@
     padding-bottom: 0;
   }
 
-  #math-output {
+  #math-output-container-container {
+    width: 100%;
     height: var(--oneLineWithPadding);
 
-    color: #1976d2;
+    overflow: scroll;
 
     border-bottom-left-radius: calc(
       var(--buttonBorderRadius) - var(--shadowOffset)
@@ -117,8 +135,26 @@
     padding-top: 0;
   }
 
-  @media (prefers-color-scheme: dark) {
-    #math-output {
+  #math-output-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+
+    width: 100%;
+    min-height: 100%;
+  }
+  #math-output {
+    width: 100%;
+
+    text-align: end;
+
+    overflow: visible;
+    overflow-wrap: break-word;
+
+    color: #1976d2;
+
+    @media (prefers-color-scheme: dark) {
       color: #2196f3;
     }
   }

@@ -6,7 +6,6 @@ import ModelSelectorOption from "./ModelSelectorOption.astro";
 import GPT2DownloadButton from "./GPT2DownloadButton.astro";
 import GPT4ApiKeyInput from "./GPT4ApiKeyInput.astro";
 import Button from "../../Button.astro";
-import MultiplyIcon from "../../icons/MultiplyIcon.astro";
 
 interface Props {
   lightBackgroundColor: HexColor;
@@ -38,10 +37,11 @@ const id = cryptoRandomString({ length: 4, type: "alphanumeric" });
         darkGradientColor={props.darkBackgroundColor}
         darkTextColor={props.darkTextColor}
         darkColorDifference={0.9}
-        small
+        mini
+        padding
         disabled
       >
-        <MultiplyIcon />
+        Done
       </Button>
     </div>
 

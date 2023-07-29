@@ -72,11 +72,12 @@ const {
 </div>
 
 <script>
+  import type { CalcGPT } from "../../../core/CalcGPT";
   import { CalcGPT2 } from "../../../core/CalcGPT2";
   import { selectParentOption } from "./helpers";
 
   declare global {
-    var calcGPT2: CalcGPT2;
+    var calcGPT: CalcGPT;
   }
 
   const bytesInMB = 1024 * 1024;
@@ -99,6 +100,7 @@ const {
     "download-progress",
   ) as HTMLProgressElement;
 
+  // @ts-expect-error navigator.gpu isn't typed
   if (!navigator.gpu) {
     downloadUnsupported.style.display = "block";
     downloadButton.style.display = "none";
@@ -136,11 +138,11 @@ const {
     downloadingToIdle();
 
     let downnloadAbortController: AbortController;
+    let calcGPT2: CalcGPT2;
 
     downloadButton.addEventListener("click", () => {
-      globalThis.calcGPT2 = new CalcGPT2();
-      const [promise, abortController] =
-        globalThis.calcGPT2.loadModel(updateProgress);
+      calcGPT2 = new CalcGPT2();
+      const [promise, abortController] = calcGPT2.loadModel(updateProgress);
 
       idleToDownloading();
 
@@ -149,6 +151,7 @@ const {
         .then(() => {
           downloadingToDone();
           selectParentOption(downloadButton);
+          globalThis.calcGPT = calcGPT2;
         })
         .catch((e) => {
           if ((e as DOMException).code === DOMException.ABORT_ERR) {
@@ -156,7 +159,7 @@ const {
           }
           console.error(e);
           downloadingToIdle();
-          globalThis.calcGPT2.gpt.unloadBuffers();
+          calcGPT2.gpt.unloadBuffers();
           alert("Download failed");
         });
     });
@@ -164,7 +167,7 @@ const {
     cancelButton.addEventListener("click", () => {
       downnloadAbortController.abort();
       downloadingToIdle();
-      globalThis.calcGPT2.gpt.unloadBuffers();
+      calcGPT2.gpt.unloadBuffers();
     });
   }
 </script>
@@ -182,6 +185,10 @@ const {
   #download-unsupported {
     display: none;
     color: #b71c1c;
+  }
+
+  #download-button {
+    font-feature-settings: normal;
   }
 
   #download-button:focus-visible {

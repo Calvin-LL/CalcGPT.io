@@ -1,4 +1,5 @@
-import { Configuration, OpenAIApi } from "openai";
+import OpenAI from "openai";
+import { displayToMathCharacters } from "../helpers";
 import {
   CalcGPTGeneric,
   DEFAULT_TEMPERATURE,
@@ -9,15 +10,12 @@ import {
 const systemMessage = "You are a calculator.";
 
 export class CalcGPT4 extends CalcGPTGeneric {
-  private api: OpenAIApi;
+  private api: OpenAI;
 
   constructor(apiKey: string) {
     super();
 
-    const configuration = new Configuration({
-      apiKey,
-    });
-    this.api = new OpenAIApi(configuration);
+    this.api = new OpenAI({ apiKey });
   }
   async calculate({
     input,
@@ -25,24 +23,24 @@ export class CalcGPT4 extends CalcGPTGeneric {
     temperature = DEFAULT_TEMPERATURE,
     topP = DEFAULT_TOP_P,
   }: GPTCalculateArgs): Promise<void> {
-    const res = await this.api.createChatCompletion(
-      {
-        model: "gpt-4",
-        temperature,
-        top_p: topP,
-        messages: [
-          { role: "system", content: systemMessage },
-          {
-            role: "user",
-            content: input,
-          },
-        ],
-        stream: true,
-      },
-      { responseType: "stream" },
-    );
-    console.log(res.data);
-    // @ts-ignore
-    res.data.on("data", (data) => console.log(data.toString()));
+    const stream = await this.api.chat.completions.create({
+      model: "gpt-4",
+      temperature,
+      top_p: topP,
+      stop: "\n",
+      messages: [
+        { role: "system", content: systemMessage },
+        {
+          role: "user",
+          content: displayToMathCharacters(input),
+        },
+      ],
+      stream: true,
+    });
+    for await (const part of stream) {
+      const newToken = part.choices[0]?.delta?.content || "";
+
+      outputHandler(newToken);
+    }
   }
 }

@@ -13,7 +13,7 @@ export interface GPTCalculateArgs {
 }
 
 export interface CalcGPT {
-  calculate: (args: GPTCalculateArgs) => void;
+  calculate: (args: GPTCalculateArgs) => Promise<void>;
 }
 
 export class CalcGPTGeneric implements CalcGPT {

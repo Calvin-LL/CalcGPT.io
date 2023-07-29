@@ -15,18 +15,28 @@ const { ...props } = Astro.props;
 
 <script>
   import { CalcGPT4 } from "../../../core/CalcGPT4";
-  import { selectParentOption, disableParentOption } from "./helpers";
-
-  declare global {
-    var calcGPT4: CalcGPT4;
-  }
+  import {
+    selectParentOption,
+    disableParentOption,
+    closeModelSelectorOverlay,
+  } from "./helpers";
 
   const input = document.getElementById(
     "openai-api-token-input",
   ) as HTMLInputElement;
 
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+
+      if (input.value.length !== 0) {
+        closeModelSelectorOverlay();
+      }
+    }
+  });
+
   input.addEventListener("input", () => {
-    globalThis.calcGPT4 = new CalcGPT4(input.value);
+    globalThis.calcGPT = new CalcGPT4(input.value);
 
     if (input.value.length === 0) {
       disableParentOption(input);
