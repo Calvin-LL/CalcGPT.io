@@ -111,6 +111,9 @@ const { ...props } = Astro.props;
     font-feature-settings: "tnum", "cv03", "cv04", "calt";
 
     @media (min-width: 461px) {
+      margin-top: calc(var(--calculatorGap) * 2);
+      margin-bottom: calc(var(--calculatorGap) * 2);
+
       border-radius: var(--borderRadius);
 
       box-shadow:
