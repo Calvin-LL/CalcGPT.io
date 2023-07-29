@@ -17,7 +17,7 @@ interface Props {
 const { ...props } = Astro.props;
 ---
 
-<div id="calculator" class="calculator standalone">
+<div id="calculator" class="calculator">
   <ModelSelectorOverlay {...props} class="overlay" />
   <div class="content" aria-hidden="true" inert>
     <TopBar {...props} />
@@ -83,6 +83,11 @@ const { ...props } = Astro.props;
 <style>
   #calculator {
     --calculatorWidth: 400px;
+
+    @media (max-width: 460px) {
+      --calculatorWidth: 100lvw;
+    }
+
     --borderRadius: calc(var(--buttonBorderRadius) + var(--calculatorGap));
     --calculatorGap: calc(var(--calculatorWidth) / 25);
 
@@ -97,14 +102,15 @@ const { ...props } = Astro.props;
     position: relative;
 
     width: var(--calculatorWidth);
-    height: max(100vh, calc(920 / 400 * var(--calculatorWidth)));
+    height: max(100lvh, calc(934 / 400 * var(--calculatorWidth)));
     margin: auto;
     padding: var(--calculatorGap);
     box-sizing: border-box;
 
+    font-size: calc(var(--buttonSize) / 4);
     font-feature-settings: "tnum", "cv03", "cv04", "calt";
 
-    &.standalone {
+    @media (min-width: 461px) {
       border-radius: var(--borderRadius);
 
       box-shadow:
