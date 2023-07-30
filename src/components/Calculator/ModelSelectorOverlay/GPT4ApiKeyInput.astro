@@ -37,15 +37,17 @@ const { ...props } = Astro.props;
     }
   });
 
-  input.addEventListener("input", () => {
-    globalThis.calcGPT = new CalcGPT4(input.value);
+  input.addEventListener("input", handleInput);
+  handleInput();
 
+  function handleInput() {
     if (input.value.length === 0) {
       disableParentOption(input);
     } else {
+      globalThis.calcGPT = new CalcGPT4(input.value);
       selectParentOption(input);
     }
-  });
+  }
 </script>
 
 <style lang="scss">
