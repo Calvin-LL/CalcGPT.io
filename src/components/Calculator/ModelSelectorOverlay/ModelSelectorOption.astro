@@ -42,9 +42,8 @@ const { name, value, checked = false, disabled = false } = Astro.props;
   // add checked class to div.model-option if input is checked
   // and remove checked class if input is not checked
   const inputs = overlay.querySelectorAll<HTMLInputElement>(
-    "div.model-option > label > input",
+    'div.model-option > label > input[name="model"]',
   );
-
   // check the child input if the div.model-option is clicked
   const modelOptions =
     overlay.querySelectorAll<HTMLDivElement>("div.model-option");
@@ -91,6 +90,10 @@ const { name, value, checked = false, disabled = false } = Astro.props;
 
   for (const input of inputs) {
     input.addEventListener("change", () => {
+      if (!input.checked) {
+        return;
+      }
+
       updateAllRadioInput();
       updateGPTButton(input.value);
       closeButton.disabled = false;
