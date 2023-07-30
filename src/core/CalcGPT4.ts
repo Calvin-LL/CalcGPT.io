@@ -43,7 +43,5 @@ export class CalcGPT4 extends CalcGPTGeneric {
 
       outputHandler(newToken);
     }
-
-    // TODO: add error handling
   }
 }
