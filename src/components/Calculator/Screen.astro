@@ -69,7 +69,8 @@
   .screen {
     --screenPadding: calc(var(--buttonBorderRadius) / 2);
     --fontSize: calc(var(--buttonSize) / 1.6);
-    --oneLineWithPadding: calc(1.4 * var(--fontSize) + var(--screenPadding));
+    --oneLine: calc(var(--fontSize) * 1.4);
+    --oneLineWithPadding: calc(var(--oneLine) + var(--screenPadding));
 
     flex-grow: 1;
 
@@ -79,6 +80,7 @@
     align-items: stretch;
 
     min-height: calc(2 * var(--oneLineWithPadding));
+    max-height: calc(3 * var(--oneLine) + 2 * var(--screenPadding));
     overflow: hidden;
     box-sizing: border-box;
     margin-bottom: calc(var(--calculatorGap));

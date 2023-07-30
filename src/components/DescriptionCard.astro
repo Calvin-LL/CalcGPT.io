@@ -1,0 +1,92 @@
+<div class="description-card-container">
+  <div class="description-card">
+    <h2>CalcGPT</h2>
+    <div>2023</div>
+
+    <div>HTML, CSS and JS on website</div>
+
+    <p>
+      <a href="https://calvin.sh" target="_blank" rel="noopener noreferrer"
+        ><b>Calvin Liang</b></a
+      > (b. 1999)
+    </p>
+
+    <p>
+      CalcGPT, conceived by an incisive and quirky artist-engineer Calvin Liang,
+      serves as the praxis of satire in a hyper-advanced AI-dominated era.
+      Imbued with an ingenious blend of technology and dry humor, the creation
+      shrewdly prods at the modern world's pervasive and at times, excessive
+      leaning towards AI solutions - even when not necessarily needed.
+    </p>
+    <p>
+      More than merely functional, this artwork manifests in the rather
+      unassuming form of a calculator, powered by the sophisticated GPT language
+      model. But this isn't your standard piece of tech; instead, it is a clever
+      parody, an emblem of resistance to the unrelenting AI craze.
+    </p>
+    <p>
+      CalcGPT embodies the timeless adage - 'Old is Gold' - reminding us that
+      it’s often rewarding to resort to established, traditional methods rather
+      than chasing buzzword-infused cutting-edge tech. Serving not just as a
+      computational tool, but as a poignant social commentary, this creation
+      employs the grandeur of technology to a funny yet thought-provoking end.
+    </p>
+    <p>
+      The piece invites us to reflect on the necessity and relevance of AI in
+      every aspect of our lives as opposed to its prevailing use as a mere
+      marketing gimmick. With its delightful slowness and propensity for
+      computational errors, CalcGPT elicits mirth while urging us to question
+      our zealous indulgence in all things AI.
+    </p>
+    <p>
+      Liang's creation is laced with understated humor, driving home a
+      lighthearted critique on our unchecked fascination with AI. CalcGPT urges
+      us to weigh the equilibrium between preserving tradition and embracing
+      innovation and reflects on the possibility of our headlong pursuit of
+      fashionable tech buzzwords misguiding us.
+    </p>
+  </div>
+</div>
+
+<style>
+  .description-card-container {
+    margin: auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .description-card {
+      --height: 2;
+
+      max-width: 800px;
+      padding: 2rem;
+      margin: 2rem;
+
+      box-shadow: calc(var(--shadowOffset) * var(--height))
+        calc(var(--shadowOffset) * var(--height))
+        calc(var(--blurRadius) * var(--height)) rgba(0, 0, 0, 0.2);
+
+      background-color: #fff;
+
+      @media (prefers-color-scheme: dark) {
+        background-color: #222;
+      }
+
+      @media (max-width: 500px) {
+        box-shadow: none;
+        margin: 0;
+      }
+
+      > h2 {
+        margin-bottom: 0rem;
+      }
+
+      & a {
+        color: inherit;
+        text-decoration: none;
+      }
+    }
+  }
+</style>
