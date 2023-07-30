@@ -48,7 +48,7 @@ const { ...props } = Astro.props;
   });
 </script>
 
-<style>
+<style lang="scss">
   input {
     --borderRadius: calc(var(--buttonSize) / 4);
 
@@ -70,13 +70,13 @@ const { ...props } = Astro.props;
     width: 100%;
     border-radius: var(--borderRadius);
     font-size: calc(var(--buttonSize) * 0.2);
-  }
 
-  input:focus {
-    outline-color: #1e88e5;
-  }
+    &:focus {
+      outline-color: #1e88e5;
+    }
 
-  input::caret {
-    color: black;
+    &::caret {
+      color: black;
+    }
   }
 </style>

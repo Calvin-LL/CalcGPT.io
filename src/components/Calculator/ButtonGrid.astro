@@ -62,7 +62,7 @@ const { ...props } = Astro.props;
   </Button>
 </div>
 
-<style>
+<style lang="scss">
   .button-grid {
     width: var(--buttonGridWidth);
     height: calc(var(--buttonSize) * 5 + var(--calculatorGap) * 4);
@@ -74,9 +74,9 @@ const { ...props } = Astro.props;
     grid-row-gap: var(--calculatorGap);
 
     font-feature-settings: "tnum", "cv03", "cv04", "calt";
-  }
 
-  .button-grid > button[data-value="retry"] {
-    grid-area: 1 / 2 / 2 / 4;
+    & > button[data-value="retry"] {
+      grid-area: 1 / 2 / 2 / 4;
+    }
   }
 </style>

@@ -51,6 +51,7 @@ const colors = {
 </Layout>
 
 <style
+  lang="scss"
   define:vars={{
     lightLightShadowColor,
     darkLightShadowColor,
@@ -80,13 +81,11 @@ const colors = {
     --darkShadowColor: var(--darkLightShadowColor);
     --lightShadowColor: var(--lightLightShadowColor);
 
-    margin: auto;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    main {
+    @media (prefers-color-scheme: dark) {
       --darkShadowColor: var(--darkDarkShadowColor);
       --lightShadowColor: var(--lightDarkShadowColor);
     }
+
+    margin: auto;
   }
 </style>

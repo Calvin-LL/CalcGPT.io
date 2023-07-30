@@ -115,6 +115,7 @@ const lightDarkThumbGradientColor = colorLuminance(darkThumbGradientColor, 0.5);
 </script>
 
 <style
+  lang="scss"
   define:vars={{
     darkLightThumbShadowColor,
     lightLightThumbShadowColor,
@@ -132,145 +133,120 @@ const lightDarkThumbGradientColor = colorLuminance(darkThumbGradientColor, 0.5);
 
     width: 100%;
     margin-bottom: var(--calculatorGap);
-  }
 
-  .slider > .top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    & > .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
 
-    margin-bottom: calc(var(--calculatorGap) / 2);
-  }
+      margin-bottom: calc(var(--calculatorGap) / 2);
 
-  .slider > .top > label {
-    font-size: var(--fontSize);
-  }
+      & > label {
+        font-size: var(--fontSize);
+      }
 
-  .slider > .top > input[type="number"] {
-    --fontSize: calc(var(--buttonSize) / 6);
-    --height: calc(var(--fontSize) * 2.2);
-    --padding: calc(var(--fontSize) / 2);
+      & > input[type="number"] {
+        --fontSize: calc(var(--buttonSize) / 6);
+        --height: calc(var(--fontSize) * 2.2);
+        --padding: calc(var(--fontSize) / 2);
 
-    font-size: var(--fontSize);
-    height: var(--height);
-    width: calc(var(--fontSize) * 4.2);
-    box-sizing: border-box;
+        font-size: var(--fontSize);
+        height: var(--height);
+        width: calc(var(--fontSize) * 4.2);
+        box-sizing: border-box;
 
-    margin: 0;
-    padding: 0;
-    outline: none;
-    border: none;
-    border-radius: calc(var(--height) / 4);
-    padding: var(--padding);
+        margin: 0;
+        padding: 0;
+        outline: none;
+        border: none;
+        border-radius: calc(var(--height) / 4);
+        padding: var(--padding);
 
-    background-color: #fff;
-    color: var(--textColor);
-  }
+        background-color: #fff;
+        color: var(--textColor);
 
-  @media (prefers-color-scheme: dark) {
-    .slider > .top > input[type="number"] {
-      background-color: #000;
+        @media (prefers-color-scheme: dark) {
+          background-color: #000;
+        }
+      }
     }
-  }
 
-  .slider > input[type="range"] {
-    --trackHeight: calc(var(--buttonSize) / 3);
-    --lightThumbShadowColor: var(--lightLightThumbShadowColor);
-    --darkThumbShadowColor: var(--darkLightThumbShadowColor);
-    --lightThumbGradientColor: var(--lightLightThumbGradientColor);
-    --darkThumbGradientColor: var(--darkLightThumbGradientColor);
-    --thumbSize: calc(var(--trackHeight) * 0.9);
+    & > input[type="range"] {
+      --trackHeight: calc(var(--buttonSize) / 3);
+      --lightThumbShadowColor: var(--lightLightThumbShadowColor);
+      --darkThumbShadowColor: var(--darkLightThumbShadowColor);
+      --lightThumbGradientColor: var(--lightLightThumbGradientColor);
+      --darkThumbGradientColor: var(--darkLightThumbGradientColor);
+      --thumbSize: calc(var(--trackHeight) * 0.9);
 
-    margin: 0;
-    padding: 0;
-    border: none;
+      @media (prefers-color-scheme: dark) {
+        --lightThumbShadowColor: var(--lightDarkThumbShadowColor);
+        --darkThumbShadowColor: var(--darkDarkThumbShadowColor);
+        --lightThumbGradientColor: var(--lightDarkThumbGradientColor);
+        --darkThumbGradientColor: var(--darkDarkThumbGradientColor);
+      }
 
-    appearance: none;
-    background: transparent;
-    cursor: pointer;
-    width: 100%;
-  }
+      margin: 0;
+      padding: 0;
+      border: none;
 
-  @media (prefers-color-scheme: dark) {
-    .slider > input[type="range"] {
-      --lightThumbShadowColor: var(--lightDarkThumbShadowColor);
-      --darkThumbShadowColor: var(--darkDarkThumbShadowColor);
-      --lightThumbGradientColor: var(--lightDarkThumbGradientColor);
-      --darkThumbGradientColor: var(--darkDarkThumbGradientColor);
+      appearance: none;
+      background: transparent;
+      cursor: pointer;
+      width: 100%;
+
+      @mixin track {
+        margin: 0;
+        padding: 0;
+        border: none;
+        border-radius: calc(var(--trackHeight) / 2);
+        height: var(--trackHeight);
+
+        box-shadow:
+          inset var(--shadowOffset) var(--shadowOffset) var(--blurRadius)
+            var(--darkShadowColor),
+          inset calc(var(--shadowOffset) * -1) calc(var(--shadowOffset) * -1)
+            var(--blurRadius) var(--lightShadowColor);
+      }
+
+      @mixin thumb {
+        appearance: none;
+        margin: 0;
+        padding: 0;
+        border: none;
+
+        height: var(--thumbSize);
+        width: var(--thumbSize);
+        margin-top: calc((var(--trackHeight) - var(--thumbSize)) / 2);
+        border-radius: calc(var(--thumbSize) / 2);
+
+        box-shadow:
+          var(--shadowOffset) 0 var(--blurRadius) var(--darkThumbShadowColor),
+          calc(var(--shadowOffset) * -1) 0 var(--blurRadius)
+            var(--lightThumbShadowColor);
+
+        background: linear-gradient(
+          135deg,
+          var(--lightThumbGradientColor),
+          var(--darkThumbGradientColor)
+        );
+      }
+
+      &::-webkit-slider-runnable-track {
+        @include track;
+      }
+
+      &::-moz-range-track {
+        @include track;
+      }
+
+      &::-webkit-slider-thumb {
+        @include thumb;
+      }
+
+      &::-moz-range-thumb {
+        @include thumb;
+      }
     }
-  }
-
-  .slider > input[type="range"]::-webkit-slider-runnable-track {
-    margin: 0;
-    padding: 0;
-    border: none;
-    border-radius: calc(var(--trackHeight) / 2);
-    height: var(--trackHeight);
-
-    box-shadow:
-      inset var(--shadowOffset) var(--shadowOffset) var(--blurRadius)
-        var(--darkShadowColor),
-      inset calc(var(--shadowOffset) * -1) calc(var(--shadowOffset) * -1)
-        var(--blurRadius) var(--lightShadowColor);
-  }
-
-  .slider > input[type="range"]::-moz-range-track {
-    margin: 0;
-    padding: 0;
-    border: none;
-    border-radius: calc(var(--trackHeight) / 2);
-    height: var(--trackHeight);
-
-    box-shadow:
-      inset var(--shadowOffset) var(--shadowOffset) var(--blurRadius)
-        var(--darkShadowColor),
-      inset calc(var(--shadowOffset) * -1) calc(var(--shadowOffset) * -1)
-        var(--blurRadius) var(--lightShadowColor);
-  }
-
-  .slider > input[type="range"]::-webkit-slider-thumb {
-    appearance: none;
-    margin: 0;
-    padding: 0;
-    border: none;
-
-    height: var(--thumbSize);
-    width: var(--thumbSize);
-    margin-top: calc((var(--trackHeight) - var(--thumbSize)) / 2);
-    border-radius: calc(var(--thumbSize) / 2);
-
-    box-shadow:
-      var(--shadowOffset) 0 var(--blurRadius) var(--darkThumbShadowColor),
-      calc(var(--shadowOffset) * -1) 0 var(--blurRadius)
-        var(--lightThumbShadowColor);
-
-    background: linear-gradient(
-      135deg,
-      var(--lightThumbGradientColor),
-      var(--darkThumbGradientColor)
-    );
-  }
-
-  .slider > input[type="range"]::-moz-range-thumb {
-    appearance: none;
-    margin: 0;
-    padding: 0;
-    border: none;
-
-    height: var(--thumbSize);
-    width: var(--thumbSize);
-    margin-top: calc((var(--trackHeight) - var(--thumbSize)) / 2);
-    border-radius: calc(var(--thumbSize) / 2);
-
-    box-shadow:
-      var(--shadowOffset) 0 var(--blurRadius) var(--darkThumbShadowColor),
-      calc(var(--shadowOffset) * -1) 0 var(--blurRadius)
-        var(--lightThumbShadowColor);
-
-    background: linear-gradient(
-      135deg,
-      var(--lightThumbGradientColor),
-      var(--darkThumbGradientColor)
-    );
   }
 </style>

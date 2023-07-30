@@ -188,7 +188,7 @@ const {
   }
 </script>
 
-<style>
+<style lang="scss">
   div.download-area {
     display: flex;
     flex-direction: column;
@@ -196,11 +196,15 @@ const {
     justify-content: center;
     gap: calc(var(--buttonSize) * 0.2);
     margin-top: calc(var(--buttonSize) * 0.2);
-  }
 
-  .error {
-    display: none;
-    color: #b71c1c;
+    & .error {
+      display: none;
+      color: #b71c1c;
+
+      @media (prefers-color-scheme: dark) {
+        color: #e57373;
+      }
+    }
   }
 
   #download-button {
@@ -215,33 +219,27 @@ const {
     display: none;
   }
 
-  @media (prefers-color-scheme: dark) {
-    #download-unsupported {
-      color: #e57373;
-    }
-  }
-
   #progress-area {
     display: none;
     flex-direction: column;
     align-items: stretch;
     justify-content: center;
-  }
 
-  #progress-area > label {
-    font-size: calc(var(--buttonSize) * 0.22);
-    margin-bottom: calc(var(--buttonSize) * 0.1);
-  }
+    & > label {
+      font-size: calc(var(--buttonSize) * 0.22);
+      margin-bottom: calc(var(--buttonSize) * 0.1);
+    }
 
-  #progress-area > div.download-progress {
-    font-size: calc(var(--buttonSize) * 0.2);
-    margin-bottom: calc(var(--buttonSize) * 0.1);
-  }
+    & > div.download-progress {
+      font-size: calc(var(--buttonSize) * 0.2);
+      margin-bottom: calc(var(--buttonSize) * 0.1);
+    }
 
-  #progress-area > progress {
-    appearance: none;
+    & > progress {
+      appearance: none;
 
-    height: calc(var(--buttonSize) * 0.2);
-    border-radius: calc(var(--buttonSize) * 0.1);
+      height: calc(var(--buttonSize) * 0.2);
+      border-radius: calc(var(--buttonSize) * 0.1);
+    }
   }
 </style>

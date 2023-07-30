@@ -43,14 +43,22 @@ const { class: className, "class:list": classList } = Astro.props;
   <path class="dark" d="m32.2,10.5h10.8v2.3h-4v10.8h-2.7v-10.8h-4v-2.3Z"></path>
 </svg>
 
-<style>
+<style lang="scss">
   svg {
     > .dark {
       fill: #01182b;
+
+      @media (prefers-color-scheme: dark) {
+        fill: #ecf0f3;
+      }
     }
 
     > .light {
       fill: #ecf0f3;
+
+      @media (prefers-color-scheme: dark) {
+        fill: #01182b;
+      }
     }
 
     > .equal {
@@ -59,16 +67,6 @@ const { class: className, "class:list": classList } = Astro.props;
 
     > .retry {
       fill: #92ffd0;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      > .dark {
-        fill: #ecf0f3;
-      }
-
-      > .light {
-        fill: #01182b;
-      }
     }
   }
 </style>

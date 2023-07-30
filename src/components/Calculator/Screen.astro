@@ -65,7 +65,7 @@
   }
 </script>
 
-<style>
+<style lang="scss">
   .screen {
     --screenPadding: calc(var(--buttonBorderRadius) / 2);
     --fontSize: calc(var(--buttonSize) / 1.6);
@@ -90,24 +90,24 @@
         var(--darkShadowColor),
       inset calc(var(--shadowOffset) * -1) calc(var(--shadowOffset) * -1)
         var(--blurRadius) var(--lightShadowColor);
-  }
 
-  .screen > * {
-    width: 100%;
-    min-height: var(--oneLineWithPadding);
-    box-sizing: border-box;
-    margin: 0px;
-    padding: var(--screenPadding);
-    text-align: right;
-    border: none;
-    outline: none;
-    background: none;
-    font-family: inherit;
-    font-feature-settings: inherit;
-    font-size: var(--fontSize);
-    resize: none;
-    overflow-x: hidden;
-    overflow-y: auto;
+    & > * {
+      width: 100%;
+      min-height: var(--oneLineWithPadding);
+      box-sizing: border-box;
+      margin: 0px;
+      padding: var(--screenPadding);
+      text-align: right;
+      border: none;
+      outline: none;
+      background: none;
+      font-family: inherit;
+      font-feature-settings: inherit;
+      font-size: var(--fontSize);
+      resize: none;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
   }
 
   #math-input {

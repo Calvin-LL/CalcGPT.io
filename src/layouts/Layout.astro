@@ -72,7 +72,7 @@ const backgroundColorStyleString = `
   </body>
 </html>
 
-<style is:global>
+<style lang="scss" is:global>
   html {
     font-family: "Inter", system-ui, sans-serif;
     background-color: var(--backgroundColor);
@@ -86,10 +86,10 @@ const backgroundColorStyleString = `
 
   a {
     color: var(--linkColor);
-  }
 
-  a:visited {
-    color: var(--visitedLinkColor);
+    &:visited {
+      color: var(--visitedLinkColor);
+    }
   }
 
   input,
