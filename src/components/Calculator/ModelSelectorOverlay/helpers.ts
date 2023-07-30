@@ -8,7 +8,6 @@ export function selectParentOption(el: HTMLElement) {
 }
 
 export function disableParentOption(el: HTMLElement) {
-  console.log("disableParentOption");
   const option = el.closest(".model-option")!;
   const radio = option.querySelector<HTMLInputElement>("input[type=radio]")!;
   option.classList.add("disabled");
