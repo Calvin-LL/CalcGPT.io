@@ -46,10 +46,16 @@ function destroyOperations() {
   for (const operation of operations) operation.destroy();
 }
 
-export const bufferUsageDict = {
-  copy_from: GPUBufferUsage.COPY_SRC,
-  copy_to: GPUBufferUsage.COPY_DST,
-  storage: GPUBufferUsage.STORAGE,
-  uniform: GPUBufferUsage.UNIFORM,
-  map_read: GPUBufferUsage.MAP_READ,
-};
+let bufferUsageDict: any;
+
+try {
+  bufferUsageDict = {
+    copy_from: GPUBufferUsage.COPY_SRC,
+    copy_to: GPUBufferUsage.COPY_DST,
+    storage: GPUBufferUsage.STORAGE,
+    uniform: GPUBufferUsage.UNIFORM,
+    map_read: GPUBufferUsage.MAP_READ,
+  };
+} catch (e) {}
+
+export { bufferUsageDict };
