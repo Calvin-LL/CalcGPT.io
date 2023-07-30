@@ -1,22 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 80">
 	<style>
 		.dark {
-		fill: #01182b;
-		}
-		
-		@media (prefers-color-scheme: dark) {
-		.dark {
-		fill: #ecf0f3;}
-		}
-		
-		.light {
 		fill: #ecf0f3;
 		}
 		
-		@media (prefers-color-scheme: dark) {
 		.light {
 		fill: #01182b;
-		}
 		}
 		
 		.equal {
