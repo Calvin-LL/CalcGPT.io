@@ -37,10 +37,13 @@ export class CalcGPT4 extends CalcGPTGeneric {
       ],
       stream: true,
     });
+
     for await (const part of stream) {
       const newToken = part.choices[0]?.delta?.content || "";
 
       outputHandler(newToken);
     }
+
+    // TODO: add error handling
   }
 }

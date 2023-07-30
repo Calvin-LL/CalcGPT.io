@@ -1,4 +1,5 @@
 import type { CalcGPT } from "../../core/CalcGPT";
+import { mathToDisplayCharacters } from "../../helpers";
 
 declare global {
   // indicate whether we are waiting for the model to predict the next output
@@ -28,12 +29,15 @@ export function predictAnswer() {
     .calculate({
       input: mathInput.value,
       outputHandler: (newToken: string) => {
-        mathOutput.innerText += newToken;
+        mathOutput.innerText += mathToDisplayCharacters(newToken);
       },
       temperature: Number(temperatureSlider.value),
       topP: Number(topPSlider.value),
     })
-    .then(() => {
+    .catch((e: Error) => {
+      mathOutput.innerText = e.message;
+    })
+    .finally(() => {
       globalThis.isPredicting = false;
     });
 }
