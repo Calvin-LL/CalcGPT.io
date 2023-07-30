@@ -20,7 +20,7 @@ const {
 ---
 
 <div class="download-area">
-  <div id="download-unsupported">
+  <div id="download-unsupported" class="error">
     Your browser does not support <a
       href="https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API"
       target="_blank"
@@ -30,6 +30,10 @@ const {
       target="_blank"
       rel="noopener noreferrer">supported browser</a
     > instead.
+  </div>
+  <div id="download-no-gpu" class="error">
+    Your device does not seem to have a GPU. Use a device with a GPU instead. If
+    you are using a mobile device, try using a desktop device instead.
   </div>
 
   <Button
@@ -85,6 +89,9 @@ const {
   const downloadUnsupported = document.getElementById(
     "download-unsupported",
   ) as HTMLDivElement;
+  const downloadNoGPU = document.getElementById(
+    "download-no-gpu",
+  ) as HTMLDivElement;
   const downloadButton = document.getElementById(
     "download-button",
   ) as HTMLButtonElement;
@@ -100,9 +107,15 @@ const {
     "download-progress",
   ) as HTMLProgressElement;
 
-  // @ts-expect-error navigator.gpu isn't typed
-  if (!navigator.gpu) {
+  if (!(await navigator.gpu)) {
     downloadUnsupported.style.display = "block";
+    downloadNoGPU.style.display = "none";
+    downloadButton.style.display = "none";
+    cancelButton.style.display = "none";
+    progressArea.style.display = "none";
+  } else if (!(await navigator.gpu.requestAdapter())) {
+    downloadUnsupported.style.display = "none";
+    downloadNoGPU.style.display = "block";
     downloadButton.style.display = "none";
     cancelButton.style.display = "none";
     progressArea.style.display = "none";
@@ -114,6 +127,7 @@ const {
 
     function idleToDownloading() {
       downloadUnsupported.style.display = "none";
+      downloadNoGPU.style.display = "none";
       downloadButton.style.display = "none";
       cancelButton.style.display = "block";
       progressArea.style.display = "flex";
@@ -123,6 +137,7 @@ const {
 
     function downloadingToIdle() {
       downloadUnsupported.style.display = "none";
+      downloadNoGPU.style.display = "none";
       downloadButton.style.display = "block";
       cancelButton.style.display = "none";
       progressArea.style.display = "none";
@@ -130,6 +145,7 @@ const {
 
     function downloadingToDone() {
       downloadUnsupported.style.display = "none";
+      downloadNoGPU.style.display = "none";
       downloadButton.style.display = "none";
       cancelButton.style.display = "none";
       progressArea.style.display = "none";
@@ -182,7 +198,7 @@ const {
     margin-top: calc(var(--buttonSize) * 0.2);
   }
 
-  #download-unsupported {
+  .error {
     display: none;
     color: #b71c1c;
   }
