@@ -64,7 +64,10 @@ const id = cryptoRandomString({ length: 4, type: "alphanumeric" });
             rel="noopener noreferrer">OpenAI API key</a
           > below to use it.
         </div>
-        <GPT4ApiKeyInput placeholder="Enter your API key" />
+        <GPT4ApiKeyInput
+          placeholder="Enter your API key"
+          enterkeyhint="enter"
+        />
       </ModelSelectorOption>
     </div>
   </fieldset>
