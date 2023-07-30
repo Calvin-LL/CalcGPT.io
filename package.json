@@ -17,6 +17,8 @@
   },
   "devDependencies": {
     "@types/node": "^20.4.2",
+    "@vitejs/plugin-basic-ssl": "^1.0.1",
+    "@webgpu/types": "^0.1.34",
     "prettier": "^3.0.0",
     "prettier-plugin-astro": "^0.11.0"
   }
