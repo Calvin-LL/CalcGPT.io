@@ -16,6 +16,34 @@ export function disableParentOption(el: HTMLElement) {
   radio.dispatchEvent(new Event("change"));
 }
 
+function listenForTransitionEndOnce(el: HTMLElement, callback: () => void) {
+  const duration = getComputedStyle(el).transitionDuration;
+  let ran = false;
+
+  el.addEventListener(
+    "transitionend",
+    () => {
+      if (ran) {
+        return;
+      }
+      ran = true;
+      callback();
+    },
+    { once: true },
+  );
+
+  setTimeout(
+    () => {
+      if (ran) {
+        return;
+      }
+      ran = true;
+      callback();
+    },
+    parseFloat(duration) * 1000,
+  );
+}
+
 export function openModelSelectorOverlay() {
   const calculator = document.getElementById("calculator")!;
   const content = calculator.querySelector<HTMLDivElement>(".content")!;
@@ -24,13 +52,9 @@ export function openModelSelectorOverlay() {
   content.ariaHidden = "true";
   content.inert = true;
 
-  overlay.addEventListener(
-    "transitionend",
-    () => {
-      overlay.classList.remove("open-from");
-    },
-    { once: true },
-  );
+  listenForTransitionEndOnce(overlay, () => {
+    overlay.classList.remove("open-from");
+  });
   overlay.classList.remove("closed");
   overlay.classList.add("open-from");
   requestAnimationFrame(() => {
@@ -46,15 +70,11 @@ export function closeModelSelectorOverlay() {
   content.ariaHidden = null;
   content.inert = false;
 
-  overlay.addEventListener(
-    "transitionend",
-    () => {
-      overlay.classList.remove("opened");
-      overlay.classList.remove("close-to");
-      overlay.classList.add("closed");
-    },
-    { once: true },
-  );
+  listenForTransitionEndOnce(overlay, () => {
+    overlay.classList.remove("opened");
+    overlay.classList.remove("close-to");
+    overlay.classList.add("closed");
+  });
   overlay.classList.add("opened");
   overlay.classList.add("close-to");
 }
