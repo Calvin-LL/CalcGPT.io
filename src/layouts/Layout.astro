@@ -58,7 +58,13 @@ const backgroundColorStyleString = `
     <style set:html={backgroundColorStyleString}></style>
 
     <meta charset="UTF-8" />
-    <meta name="description" content="A calculator powered by GPT" />
+    <meta
+      name="description"
+      content="A silly calculator unnecessarily powered by GPT"
+    />
+    <meta property="og:title" content={title} />
+    <meta property="og:url" content="https://CalcGPT.io" />
+    <meta property="og:image" content="https://CalcGPT.io/open-graph.png" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, maximum-scale=1"

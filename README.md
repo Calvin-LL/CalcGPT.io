@@ -1,6 +1,6 @@
 # CalcGPT
 
-A silly little calculator that uses GPT to do math.
+A silly calculator unnecessarily powered by GPT.
 
 ## TODO
 
