@@ -23,41 +23,95 @@ const { ...props } = Astro.props;
 ---
 
 <div class="button-grid">
-  <Button {...props} class="calc-button" type="clear" data-value="clear">
+  <Button
+    {...props}
+    class="calc-button"
+    type="clear"
+    data-value="clear"
+    aria-label="clear"
+  >
     C
   </Button>
-  <Button {...props} class="calc-button" type="retry" data-value="retry">
+  <Button
+    {...props}
+    class="calc-button"
+    type="retry"
+    data-value="retry"
+    aria-label="regenerate"
+  >
     <RefreshIcon />{" "}<span style="font-weight: 500">Regenerate</span>
   </Button>
-  <Button {...props} class="calc-button" type="operator" data-value="÷">
+  <Button
+    {...props}
+    class="calc-button"
+    type="operator"
+    data-value="÷"
+    aria-label="divide"
+  >
     <DivideIcon />
   </Button>
   <Button {...props} class="calc-button" type="number" data-value="7">7</Button>
   <Button {...props} class="calc-button" type="number" data-value="8">8</Button>
   <Button {...props} class="calc-button" type="number" data-value="9">9</Button>
-  <Button {...props} class="calc-button" type="operator" data-value="×">
+  <Button
+    {...props}
+    class="calc-button"
+    type="operator"
+    data-value="×"
+    aria-label="multiply"
+  >
     <MultiplyIcon />
   </Button>
   <Button {...props} class="calc-button" type="number" data-value="4">4</Button>
   <Button {...props} class="calc-button" type="number" data-value="5">5</Button>
   <Button {...props} class="calc-button" type="number" data-value="6">6</Button>
-  <Button {...props} class="calc-button" type="operator" data-value="−">
+  <Button
+    {...props}
+    class="calc-button"
+    type="operator"
+    data-value="−"
+    aria-label="minus"
+  >
     <MinusIcon />
   </Button>
   <Button {...props} class="calc-button" type="number" data-value="1">1</Button>
   <Button {...props} class="calc-button" type="number" data-value="2">2</Button>
   <Button {...props} class="calc-button" type="number" data-value="3">3</Button>
-  <Button {...props} class="calc-button" type="operator" data-value="+">
+  <Button
+    {...props}
+    class="calc-button"
+    type="operator"
+    data-value="+"
+    aria-label="plus"
+  >
     <PlusIcon />
   </Button>
   <Button {...props} class="calc-button" type="number" data-value="0">0</Button>
-  <Button {...props} class="calc-button" type="number" data-value=".">
+  <Button
+    {...props}
+    class="calc-button"
+    type="number"
+    data-value="."
+    aria-label="dot"
+  >
     <DotIcon />
   </Button>
-  <Button {...props} class="calc-button" type="number" data-value="backspace">
+  <Button
+    {...props}
+    class="calc-button"
+    type="number"
+    data-value="backspace"
+    aria-label="backspace"
+  >
     <BackspaceIcon />
   </Button>
-  <Button {...props} class="calc-button" type="equal" data-value="=">
+  <Button
+    {...props}
+    class="calc-button"
+    type="equal"
+    data-value="="
+    aria-label="equal"
+  >
     <EqualIcon />
   </Button>
 </div>
