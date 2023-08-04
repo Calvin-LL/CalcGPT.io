@@ -19,14 +19,14 @@ export const handler = stream(async (event) => {
     };
   }
   const temperature = parseFloat(event.queryStringParameters?.t ?? "NaN");
-  if (temperature || isNaN(temperature) || !isFinite(temperature)) {
+  if (isNaN(temperature) || !isFinite(temperature)) {
     return {
       statusCode: 400,
       body: "invalid temperature",
     };
   }
   const topP = parseFloat(event.queryStringParameters?.p ?? "NaN");
-  if (topP || isNaN(topP) || !isFinite(topP)) {
+  if (isNaN(topP) || !isFinite(topP)) {
     return {
       statusCode: 400,
       body: "invalid topP",
