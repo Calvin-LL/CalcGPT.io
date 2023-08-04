@@ -1,4 +1,4 @@
-import { StreamingResponse, stream } from "@netlify/functions";
+import { stream } from "@netlify/functions";
 import OpenAI from "openai";
 
 // only allow digits, decimal, and math operators
@@ -33,13 +33,13 @@ export const handler = stream(async (event) => {
     };
   }
 
-  const prompt = `1+1=2\n5-2=3\n2*4=8\n9/3=3\n${math}=`;
+  const prompt = `1+1=2\n5-2=3\n2*4=8\n9/3=3\n10/3=3.33333333333\n${math}=`;
   let stream: Awaited<ReturnType<OpenAI["completions"]["create"]>>;
 
   try {
     const openAI = new OpenAI();
     stream = await openAI.completions.create({
-      model: "ada",
+      model: "curie",
       temperature,
       top_p: topP,
       stop: "\n",
@@ -59,5 +59,5 @@ export const handler = stream(async (event) => {
     },
     statusCode: 200,
     body: stream,
-  } satisfies StreamingResponse;
+  };
 });
