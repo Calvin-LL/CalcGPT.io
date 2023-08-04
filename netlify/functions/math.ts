@@ -1,6 +1,6 @@
 import { StreamingResponse, stream } from "@netlify/functions";
 import OpenAI from "openai";
-import { mathRegex } from "../../src/core/CalcGPT3";
+import { MATH_LENGTH_LIMIT } from "../../src/core/CalcGPT3";
 
 export const handler = stream(async (event) => {
   const math = event.queryStringParameters?.m;
@@ -10,10 +10,10 @@ export const handler = stream(async (event) => {
       body: "invalid query parameter",
     };
   }
-  if (!mathRegex.test(math)) {
+  if (math.length > MATH_LENGTH_LIMIT) {
     return {
       statusCode: 400,
-      body: "invalid math expression",
+      body: "math expression too long",
     };
   }
   const temperature = parseFloat(event.queryStringParameters?.t ?? "NaN");

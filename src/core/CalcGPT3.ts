@@ -8,8 +8,7 @@ import {
   GPTCalculateArgs,
 } from "./CalcGPT";
 
-// only allow digits, decimal, and math operators
-export const mathRegex = /^([+\-*/\d.])+$/;
+export const MATH_LENGTH_LIMIT = 30;
 
 export class CalcGPT3 extends CalcGPTGeneric {
   constructor() {
@@ -23,8 +22,8 @@ export class CalcGPT3 extends CalcGPTGeneric {
     topP = DEFAULT_TOP_P,
   }: GPTCalculateArgs): Promise<void> {
     const math = displayToMathCharacters(input);
-    if (!mathRegex.test(math)) {
-      outputHandler("invalid math expression");
+    if (math.length > MATH_LENGTH_LIMIT) {
+      outputHandler("math expression too long");
       return;
     }
 
