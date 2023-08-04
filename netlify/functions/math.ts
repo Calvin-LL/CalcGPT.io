@@ -1,8 +1,6 @@
 import { stream } from "@netlify/functions";
 import OpenAI from "openai";
-
-// only allow digits, decimal, and math operators
-export const mathRegex = /^([+\-*/\d.])+$/;
+import { mathRegex } from "../../src/core/CalcGPT3";
 
 export const handler = stream(async (event) => {
   const math = event.queryStringParameters?.m;

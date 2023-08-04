@@ -1,6 +1,5 @@
 import type { Completion } from "openai/resources";
 import { Stream } from "openai/streaming";
-import { mathRegex } from "../../netlify/functions/math";
 import { displayToMathCharacters } from "../helpers";
 import {
   CalcGPTGeneric,
@@ -8,6 +7,9 @@ import {
   DEFAULT_TOP_P,
   GPTCalculateArgs,
 } from "./CalcGPT";
+
+// only allow digits, decimal, and math operators
+export const mathRegex = /^([+\-*/\d.])+$/;
 
 export class CalcGPT3 extends CalcGPTGeneric {
   constructor() {
