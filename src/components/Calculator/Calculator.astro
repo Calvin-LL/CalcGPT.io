@@ -1,6 +1,5 @@
 ---
 import type { HexColor } from "../../types/CssColor";
-import ModelSelectorOverlay from "./ModelSelectorOverlay/ModelSelectorOverlay.astro";
 import ButtonGrid from "./ButtonGrid.astro";
 import Screen from "./Screen.astro";
 import Slider from "./Slider.astro";
@@ -18,8 +17,9 @@ const { ...props } = Astro.props;
 ---
 
 <div id="calculator" class="calculator">
-  <ModelSelectorOverlay {...props} class="overlay" />
-  <div class="content" aria-hidden="true" inert>
+  <!-- <ModelSelectorOverlay {...props} class="overlay" /> -->
+  <!-- <div class="content" aria-hidden="true" inert> -->
+  <div class="content">
     <TopBar {...props} />
     <Slider
       class="temperature"
@@ -34,6 +34,17 @@ const { ...props } = Astro.props;
     <ButtonGrid {...props} />
   </div>
 </div>
+
+<script>
+  import type { CalcGPT } from "../../core/CalcGPT";
+  import { CalcGPT3 } from "../../core/CalcGPT3";
+
+  declare global {
+    var calcGPT: CalcGPT;
+  }
+
+  globalThis.calcGPT = new CalcGPT3();
+</script>
 
 <script>
   import { predictAnswer } from "./helpers";
