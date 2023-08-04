@@ -1,5 +1,4 @@
 ---
-import "inter-ui/inter-hinted-latin.css";
 import type { HexColor } from "../types/CssColor";
 
 interface Props {
@@ -102,10 +101,26 @@ const backgroundColorStyleString = `
 </html>
 
 <style lang="scss" is:global>
+  @use "inter-ui/default" with (
+    $inter-font-display: block,
+    $inter-font-path: "inter-ui/Inter (web hinted latin)"
+  );
+  @use "inter-ui/variable" with (
+    $inter-font-display: block,
+    $inter-font-path: "inter-ui/Inter (web latin)"
+  );
+
+  @include default.all;
+  @include variable.default;
+
   html {
     font-family: "Inter", system-ui, sans-serif;
     background-color: var(--backgroundColor);
     color: var(--textColor);
+
+    @supports (font-variation-settings: normal) {
+      font-family: "Inter var", system-ui, sans-serif;
+    }
   }
 
   body {
