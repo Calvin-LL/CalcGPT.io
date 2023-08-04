@@ -36,12 +36,18 @@ export class CalcGPT3 extends CalcGPTGeneric {
     const controller = new AbortController();
     const signal = controller.signal;
 
-    const response = await fetch(url.toString(), {
-      signal,
-      headers: {
-        accept: "text/event-stream",
-      },
-    });
+    let response: Response;
+    try {
+      response = await fetch(url.toString(), {
+        signal,
+        headers: {
+          accept: "text/event-stream",
+        },
+      });
+    } catch (error) {
+      outputHandler("api error");
+      return;
+    }
     if (!response.body) {
       outputHandler("api error");
       return;
