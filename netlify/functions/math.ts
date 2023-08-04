@@ -1,4 +1,4 @@
-import { stream } from "@netlify/functions";
+import { StreamingResponse, stream } from "@netlify/functions";
 import OpenAI from "openai";
 import { mathRegex } from "../../src/core/CalcGPT3";
 
@@ -56,6 +56,6 @@ export const handler = stream(async (event) => {
       "content-type": "text/event-stream",
     },
     statusCode: 200,
-    body: stream,
+    body: stream.response.body as unknown as StreamingResponse["body"],
   };
 });
