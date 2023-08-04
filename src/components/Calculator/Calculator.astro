@@ -84,6 +84,9 @@ const { ...props } = Astro.props;
         predictAnswer();
         break;
       default:
+        if (mathOutput.innerText) {
+          mathInput.value = "";
+        }
         mathInput.value += value;
         mathOutput.innerText = "";
     }
