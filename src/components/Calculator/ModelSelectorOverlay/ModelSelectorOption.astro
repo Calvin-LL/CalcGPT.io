@@ -145,7 +145,7 @@ const { name, value, checked = false, disabled = false } = Astro.props;
 
     margin-top: calc(var(--margin) / 3);
 
-    transition: all 150ms ease;
+    transition: all 150ms ease-in-out;
 
     @media (prefers-color-scheme: dark) {
       --borderColor: rgba(255, 255, 255, 0.1);
@@ -188,7 +188,7 @@ const { name, value, checked = false, disabled = false } = Astro.props;
         border-width: calc(var(--buttonSize) / 25);
         border-style: solid;
         border-color: var(--borderColor);
-        transition: all 150ms ease;
+        transition: all 150ms ease-in-out;
 
         &:checked {
           --borderColor: var(--selectedColor);
