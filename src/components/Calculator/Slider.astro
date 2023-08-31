@@ -1,5 +1,4 @@
 ---
-import type { AstroBuiltinAttributes } from "astro";
 import { colorLuminance } from "../../helpers";
 import cryptoRandomString from "crypto-random-string";
 
@@ -11,18 +10,9 @@ interface Props {
   value: number;
 
   class?: string;
-  "class:list"?: AstroBuiltinAttributes["class:list"];
 }
 
-const {
-  label,
-  min,
-  max,
-  step,
-  value,
-  class: className,
-  "class:list": classList,
-} = Astro.props;
+const { label, min, max, step, value, class: className } = Astro.props;
 const id = cryptoRandomString({ length: 4, type: "alphanumeric" });
 const labelId = `${id}-label`;
 
@@ -67,7 +57,7 @@ const darkDarkThumbGradientColor = colorLuminance(darkThumbGradientColor, -0.1);
 const lightDarkThumbGradientColor = colorLuminance(darkThumbGradientColor, 0.5);
 ---
 
-<div id={id} class:list={["slider", className, classList]}>
+<div id={id} class:list={["slider", className]}>
   <div class="top">
     <label id={labelId}>{label}</label>
     <input

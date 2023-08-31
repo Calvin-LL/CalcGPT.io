@@ -1,5 +1,4 @@
 ---
-import type { AstroBuiltinAttributes } from "astro";
 import { colorLuminance } from "../helpers";
 import type { HexColor } from "../types/CssColor";
 
@@ -17,7 +16,6 @@ interface Props {
   textFontSizeOverride?: string;
 
   class?: string;
-  "class:list"?: AstroBuiltinAttributes["class:list"];
 
   id?: string;
   small?: boolean;
@@ -41,7 +39,6 @@ const {
   textFontSizeOverride,
 
   class: className,
-  "class:list": classList,
 
   small = false,
   mini = false,
@@ -81,7 +78,7 @@ const lightDarkGradientColor = colorLuminance(darkGradientColor, 0.5);
 
 <button
   {...props}
-  class:list={[{ small, mini, padding }, className, classList]}
+  class:list={[{ small, mini, padding }, className]}
   disabled={disabled}
 >
   <slot />

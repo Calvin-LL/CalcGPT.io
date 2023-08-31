@@ -18,9 +18,9 @@ const { ...props } = Astro.props;
 <script>
   import { CalcGPT4 } from "../../../core/CalcGPT4";
   import {
-    selectParentOption,
-    disableParentOption,
     closeModelSelectorOverlay,
+    disableParentOption,
+    selectParentOption,
   } from "./helpers";
 
   const input = document.getElementById(

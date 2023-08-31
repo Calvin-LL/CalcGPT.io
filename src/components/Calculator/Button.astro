@@ -1,7 +1,6 @@
 ---
-import type { AstroBuiltinAttributes } from "astro";
-import GenericButton from "../Button.astro";
 import type { HexColor } from "../../types/CssColor";
+import GenericButton from "../Button.astro";
 
 interface Props {
   type: "number" | "operator" | "equal" | "clear" | "retry";
@@ -13,7 +12,6 @@ interface Props {
   darkTextColor: HexColor;
 
   class?: string;
-  "class:list"?: AstroBuiltinAttributes["class:list"];
 }
 
 const {
@@ -26,7 +24,6 @@ const {
   darkTextColor: globalDarkTextColor,
 
   class: className,
-  "class:list": classList,
 
   ...props
 } = Astro.props;
@@ -131,7 +128,7 @@ const textFontSizeOverride =
     darkColorDifference,
     textFontSizeOverride,
   }}
-  class:list={[className, classList]}
+  class:list={[className]}
 >
   <slot />
 </GenericButton>

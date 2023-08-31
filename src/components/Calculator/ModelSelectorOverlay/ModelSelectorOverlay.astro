@@ -1,5 +1,4 @@
 ---
-import type { AstroBuiltinAttributes } from "astro";
 import type { HexColor } from "../../../types/CssColor";
 import cryptoRandomString from "crypto-random-string";
 import ModelSelectorOption from "./ModelSelectorOption.astro";
@@ -15,15 +14,14 @@ interface Props {
   darkTextColor: HexColor;
 
   class?: string;
-  "class:list"?: AstroBuiltinAttributes["class:list"];
 }
 
-const { class: className, "class:list": classList, ...props } = Astro.props;
+const { class: className, ...props } = Astro.props;
 
 const id = cryptoRandomString({ length: 4, type: "alphanumeric" });
 ---
 
-<div class:list={["overlay", "opened", className, classList]}>
+<div class:list={["overlay", "opened", className]}>
   <fieldset aria-labelledby={id}>
     <div class="top-bar">
       <div id={id} class="label">Pick a model</div>

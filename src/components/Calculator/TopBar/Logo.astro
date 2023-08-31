@@ -1,16 +1,13 @@
 ---
-import type { AstroBuiltinAttributes } from "astro";
-
 interface Props {
   class?: string;
-  "class:list"?: AstroBuiltinAttributes["class:list"];
 }
 
-const { class: className, "class:list": classList } = Astro.props;
+const { class: className } = Astro.props;
 ---
 
 <svg
-  class:list={[className, classList]}
+  class:list={[className]}
   xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 50 80"
 >
