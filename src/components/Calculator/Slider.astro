@@ -131,7 +131,7 @@ const lightDarkThumbGradientColor = colorLuminance(darkThumbGradientColor, 0.5);
   }}
 >
   .slider {
-    --fontSize: calc(var(--buttonSize) / 4);
+    --fontSize: calc(var(--buttonSize) / 4.5);
 
     width: 100%;
     margin-bottom: var(--calculatorGap);
@@ -146,6 +146,7 @@ const lightDarkThumbGradientColor = colorLuminance(darkThumbGradientColor, 0.5);
 
         & > label {
           font-size: var(--fontSize);
+          font-weight: 500;
         }
 
         & > input[type="number"] {

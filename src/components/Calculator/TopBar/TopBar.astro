@@ -51,11 +51,15 @@ import Logo from "./Logo.astro";
 
 <style lang="scss">
   .top-bar {
-    margin: var(--calculatorGap);
+    margin: var(--calculatorGap) 0;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @media (min-width: 461px) {
+      margin: var(--calculatorGap);
+    }
 
     > .left {
       display: flex;
