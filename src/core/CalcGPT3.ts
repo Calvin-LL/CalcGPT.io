@@ -21,6 +21,11 @@ export class CalcGPT3 extends CalcGPTGeneric {
     temperature = DEFAULT_TEMPERATURE,
     topP = DEFAULT_TOP_P,
   }: GPTCalculateArgs): Promise<void> {
+    if (input.length === 0) {
+      outputHandler("please enter some math");
+      return;
+    }
+
     const math = displayToMathCharacters(input);
     if (math.length > MATH_LENGTH_LIMIT) {
       outputHandler("math expression too long");
