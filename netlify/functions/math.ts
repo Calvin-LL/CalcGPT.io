@@ -58,6 +58,7 @@ export const handler = stream(async (event) => {
       "content-type": "text/event-stream",
     },
     statusCode: 200,
+    // @ts-expect-error accesses `response` which is a private property
     body: stream.response.body as unknown as StreamingResponse["body"],
   };
 });
