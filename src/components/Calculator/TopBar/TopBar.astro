@@ -1,21 +1,5 @@
 ---
-// import type { HexColor } from "../../../types/CssColor";
 import Logo from "./Logo.astro";
-
-// interface Props {
-//   lightBackgroundColor: HexColor;
-//   darkBackgroundColor: HexColor;
-
-//   lightTextColor: HexColor;
-//   darkTextColor: HexColor;
-// }
-
-// const {
-//   lightBackgroundColor,
-//   darkBackgroundColor,
-//   lightTextColor,
-//   darkTextColor,
-// } = Astro.props;
 ---
 
 <div class="top-bar">
@@ -23,31 +7,7 @@ import Logo from "./Logo.astro";
     <Logo class="logo" />
     <span>CalcGPT</span>
   </div>
-  <!-- <Button
-    class="gpt-button"
-    lightShadowColor={lightBackgroundColor}
-    lightGradientColor={lightBackgroundColor}
-    lightTextColor={lightTextColor}
-    lightColorDifference={0.15}
-    darkShadowColor={darkBackgroundColor}
-    darkGradientColor={darkBackgroundColor}
-    darkTextColor={darkTextColor}
-    darkColorDifference={0.9}
-    mini
-    padding
-  /> -->
 </div>
-
-<!-- <script>
-  import { openModelSelectorOverlay } from "../ModelSelectorOverlay/helpers";
-
-  const calculator = document.getElementById("calculator") as HTMLDivElement;
-  const gptButton = calculator.querySelector<HTMLButtonElement>(".gpt-button")!;
-
-  gptButton.addEventListener("click", () => {
-    openModelSelectorOverlay();
-  });
-</script> -->
 
 <style lang="scss">
   .top-bar {
