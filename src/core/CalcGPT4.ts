@@ -4,7 +4,7 @@ import {
   CalcGPTGeneric,
   DEFAULT_TEMPERATURE,
   DEFAULT_TOP_P,
-  GPTCalculateArgs,
+  type GPTCalculateArgs,
 } from "./CalcGPT";
 
 const systemMessage = "You are a calculator.";

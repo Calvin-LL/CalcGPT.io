@@ -1,11 +1,11 @@
-import type { Completion } from "openai/resources";
+import type { Completion } from "openai/resources/completions";
 import { Stream } from "openai/streaming";
 import { displayToMathCharacters } from "../helpers";
 import {
   CalcGPTGeneric,
   DEFAULT_TEMPERATURE,
   DEFAULT_TOP_P,
-  GPTCalculateArgs,
+  type GPTCalculateArgs,
 } from "./CalcGPT";
 
 export const MATH_LENGTH_LIMIT = 30;
