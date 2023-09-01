@@ -4,6 +4,7 @@ import cryptoRandomString from "crypto-random-string";
 
 interface Props {
   label: string;
+  subLabel?: string;
   min: number;
   max: number;
   step: number;
@@ -12,7 +13,15 @@ interface Props {
   class?: string;
 }
 
-const { label, min, max, step, value, class: className } = Astro.props;
+const {
+  label,
+  subLabel,
+  min,
+  max,
+  step,
+  value,
+  class: className,
+} = Astro.props;
 const id = cryptoRandomString({ length: 4, type: "alphanumeric" });
 const labelId = `${id}-label`;
 
@@ -59,15 +68,18 @@ const lightDarkThumbGradientColor = colorLuminance(darkThumbGradientColor, 0.5);
 
 <div id={id} class:list={["slider", className]}>
   <div class="top">
-    <label id={labelId}>{label}</label>
-    <input
-      type="number"
-      aria-labelledby={labelId}
-      min={min}
-      max={max}
-      step={step}
-      value={value}
-    />
+    <div class="top">
+      <label id={labelId}>{label}</label>
+      <input
+        type="number"
+        aria-labelledby={labelId}
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+      />
+    </div>
+    <div class="subtitle">{subLabel}</div>
   </div>
   <input
     type="range"
@@ -125,39 +137,46 @@ const lightDarkThumbGradientColor = colorLuminance(darkThumbGradientColor, 0.5);
     margin-bottom: var(--calculatorGap);
 
     & > .top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
       margin-bottom: calc(var(--calculatorGap) / 2);
 
-      & > label {
-        font-size: var(--fontSize);
+      .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        & > label {
+          font-size: var(--fontSize);
+        }
+
+        & > input[type="number"] {
+          --fontSize: calc(var(--buttonSize) / 6);
+          --height: calc(var(--fontSize) * 2.2);
+          --padding: calc(var(--fontSize) / 2);
+
+          font-size: var(--fontSize);
+          height: var(--height);
+          width: calc(var(--fontSize) * 4.2);
+          box-sizing: border-box;
+
+          margin: 0;
+          padding: 0;
+          outline: none;
+          border: none;
+          border-radius: calc(var(--height) / 4);
+          padding: var(--padding);
+
+          background-color: #fff;
+          color: var(--textColor);
+
+          @media (prefers-color-scheme: dark) {
+            background-color: #000;
+          }
+        }
       }
 
-      & > input[type="number"] {
-        --fontSize: calc(var(--buttonSize) / 6);
-        --height: calc(var(--fontSize) * 2.2);
-        --padding: calc(var(--fontSize) / 2);
-
-        font-size: var(--fontSize);
-        height: var(--height);
-        width: calc(var(--fontSize) * 4.2);
-        box-sizing: border-box;
-
-        margin: 0;
-        padding: 0;
-        outline: none;
-        border: none;
-        border-radius: calc(var(--height) / 4);
-        padding: var(--padding);
-
-        background-color: #fff;
-        color: var(--textColor);
-
-        @media (prefers-color-scheme: dark) {
-          background-color: #000;
-        }
+      & > .subtitle {
+        font-size: calc(var(--fontSize) * 0.8);
+        opacity: 0.8;
       }
     }
 

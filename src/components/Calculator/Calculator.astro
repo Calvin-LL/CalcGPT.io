@@ -24,6 +24,7 @@ const { ...props } = Astro.props;
     <Slider
       class="temperature"
       label="Temperature"
+      subLabel="How creative the model is"
       min={0}
       max={2}
       step={0.1}
@@ -95,8 +96,8 @@ const { ...props } = Astro.props;
 
 <style lang="scss">
   #calculator {
-    --heightMin: calc(934 / 400 * var(--calculatorWidth));
-    --heightMax: calc(1004 / 400 * var(--calculatorWidth));
+    --heightMin: calc(1003 / 400 * var(--calculatorWidth));
+    --heightMax: calc(1023 / 400 * var(--calculatorWidth));
 
     position: relative;
 
