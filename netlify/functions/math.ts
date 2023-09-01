@@ -1,8 +1,10 @@
-import { StreamingResponse, stream } from "@netlify/functions";
+import { stream, type StreamingResponse } from "@netlify/functions";
 import OpenAI from "openai";
 import { MATH_LENGTH_LIMIT } from "../../src/core/CalcGPT3";
 
 export const handler = stream(async (event) => {
+  console.log(event.queryStringParameters);
+
   const math = event.queryStringParameters?.m;
   if (!math) {
     return {
