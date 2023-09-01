@@ -20,7 +20,7 @@ export class CalcGPTGeneric implements CalcGPT {
   /**
    * @description Accept input like "1+1"
    */
-  async calculate(args: GPTCalculateArgs): Promise<void> {
+  async calculate(_: GPTCalculateArgs): Promise<void> {
     throw new Error("Method not implemented.");
   }
 }
