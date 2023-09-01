@@ -1,0 +1,66 @@
+---
+import CalvinIcon from "./icons/CalvinIcon.astro";
+---
+
+<div id="footer">
+  <a
+    class="personal-logo-link"
+    href="https://calvin.sh"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <CalvinIcon />
+  </a>
+  <div class="text">
+    Made with <span role="img" aria-label="laughter">🤣</span> by
+    <a href="https://calvin.sh" target="_blank" rel="noopener noreferrer">
+      Calvin Liang
+    </a>
+  </div>
+  <div class="text">
+    <a
+      href="https://github.com/Calvin-LL/CalcGPT"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      View on GitHub
+    </a>
+  </div>
+</div>
+
+<style lang="scss">
+  #footer {
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+
+    .text {
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+      opacity: 0.8;
+    }
+
+    & > .personal-logo-link {
+      filter: grayscale(100%);
+      transition-property: all;
+      transition-duration: 125ms;
+      transition-timing-function: ease-in-out;
+
+      &:active {
+        filter: unset;
+      }
+
+      @media (hover: hover) {
+        &:hover {
+          filter: unset;
+        }
+      }
+
+      &,
+      & > :global(svg) {
+        height: 2rem;
+        width: 2rem;
+      }
+    }
+  }
+</style>
