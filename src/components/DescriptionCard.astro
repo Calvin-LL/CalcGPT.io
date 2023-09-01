@@ -8,7 +8,7 @@
     <p>
       <a href="https://calvin.sh" target="_blank" rel="noopener noreferrer"
         ><b>Calvin Liang</b></a
-      > (b. 1999)
+      >
     </p>
 
     <p>
@@ -45,6 +45,7 @@
       innovation and reflects on the possibility of our headlong pursuit of
       fashionable tech buzzwords misguiding us.
     </p>
+    <p class="footnote">^ written by ChatGPT</p>
   </div>
 </div>
 
@@ -75,17 +76,22 @@
       }
 
       @media (max-width: 500px) {
-        box-shadow: none;
-        margin: 0;
+        padding: 1.5rem;
+        margin: calc(var(--shadowOffset) * var(--height) * 2);
       }
 
       > h2 {
-        margin-bottom: 0rem;
+        margin: 0;
       }
 
       & a {
         color: inherit;
         text-decoration: none;
+      }
+
+      .footnote {
+        font-size: 0.8rem;
+        opacity: 0.8;
       }
     }
   }
