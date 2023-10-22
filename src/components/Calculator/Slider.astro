@@ -7,6 +7,8 @@ interface Props {
   subLabel?: string;
   min: number;
   max: number;
+  // actualMax is not shown on the slider but can be typed in the number input
+  actualMax?: number;
   step: number;
   value: number;
 
@@ -18,6 +20,7 @@ const {
   subLabel,
   min,
   max,
+  actualMax,
   step,
   value,
   class: className,
@@ -74,9 +77,10 @@ const lightDarkThumbGradientColor = colorLuminance(darkThumbGradientColor, 0.5);
         type="number"
         aria-labelledby={labelId}
         min={min}
-        max={max}
+        max={actualMax ?? max}
         step={step}
         value={value}
+        data-default={value}
       />
     </div>
     <div class="subtitle">{subLabel}</div>
@@ -88,6 +92,7 @@ const lightDarkThumbGradientColor = colorLuminance(darkThumbGradientColor, 0.5);
     max={max}
     step={step}
     value={value}
+    data-default={value}
   />
 </div>
 
@@ -103,10 +108,25 @@ const lightDarkThumbGradientColor = colorLuminance(darkThumbGradientColor, 0.5);
     ) as HTMLInputElement;
 
     numberInput.addEventListener("blur", () => {
-      numberInput.value = sliderInput.value;
+      console.log(numberInput.value);
+      if (numberInput.value === "") {
+        numberInput.value = numberInput.dataset.default!;
+        sliderInput.value = numberInput.dataset.default!;
+        return;
+      }
+
+      numberInput.value = Math.min(
+        Math.max(parseFloat(numberInput.value), parseFloat(numberInput.min)),
+        parseFloat(numberInput.max),
+      ).toString();
     });
 
     numberInput.addEventListener("input", () => {
+      if (numberInput.value === "") {
+        sliderInput.value = numberInput.dataset.default!;
+        return;
+      }
+
       sliderInput.value = numberInput.value;
     });
 

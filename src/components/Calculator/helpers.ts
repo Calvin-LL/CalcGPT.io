@@ -11,10 +11,10 @@ const calculator = document.getElementById("calculator")!;
 const mathInput = document.getElementById("math-input") as HTMLTextAreaElement;
 const mathOutput = document.getElementById("math-output") as HTMLDivElement;
 const temperatureSlider = calculator.querySelector(
-  "div.slider.temperature>input",
+  'div.slider.temperature input[type="number"]',
 ) as HTMLInputElement;
 const topPSlider = calculator.querySelector(
-  "div.slider.top-p>input",
+  'div.slider.top-p input[type="number"]',
 ) as HTMLInputElement;
 
 export function predictAnswer() {
