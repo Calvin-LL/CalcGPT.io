@@ -118,11 +118,11 @@ const backgroundColorStyleString = `
 <style lang="scss" is:global>
   @use "inter-ui/default" with (
     $inter-font-display: block,
-    $inter-font-path: "inter-ui/Inter (web hinted latin)"
+    $inter-font-path: "inter-ui/web"
   );
   @use "inter-ui/variable" with (
     $inter-font-display: block,
-    $inter-font-path: "inter-ui/Inter (web latin)"
+    $inter-font-path: "inter-ui/variable"
   );
 
   @include default.all;
@@ -134,7 +134,7 @@ const backgroundColorStyleString = `
     color: var(--textColor);
 
     @supports (font-variation-settings: normal) {
-      font-family: "Inter var", system-ui, sans-serif;
+      font-family: "InterVariable", system-ui, sans-serif;
     }
   }
 
