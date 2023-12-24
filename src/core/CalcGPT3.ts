@@ -61,7 +61,7 @@ export class CalcGPT3 extends CalcGPTGeneric {
       return;
     }
 
-    const stream = new Stream<Completion>(response, controller);
+    const stream = Stream.fromSSEResponse<Completion>(response, controller);
 
     for await (const part of stream) {
       const newToken = part.choices[0].text;

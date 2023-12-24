@@ -83,7 +83,7 @@
     max-height: calc(3 * var(--oneLine) + 2 * var(--screenPadding));
     overflow: hidden;
     box-sizing: border-box;
-    margin-bottom: calc(var(--calculatorGap));
+    margin-bottom: var(--calculatorGap);
     border-radius: var(--buttonBorderRadius);
     box-shadow:
       inset var(--shadowOffset) var(--shadowOffset) var(--blurRadius)
@@ -115,8 +115,8 @@
 
     color: inherit;
 
-    border-top-left-radius: calc(var(--buttonBorderRadius));
-    border-top-right-radius: calc(var(--buttonBorderRadius));
+    border-top-left-radius: var(--buttonBorderRadius);
+    border-top-right-radius: var(--buttonBorderRadius);
 
     padding-bottom: 0;
   }
@@ -148,6 +148,7 @@
     width: 100%;
     min-height: 100%;
   }
+
   #math-output {
     width: 100%;
 
@@ -160,6 +161,19 @@
 
     @media (prefers-color-scheme: dark) {
       color: #2196f3;
+    }
+
+    &.loading {
+      &::after {
+        content: "_";
+        animation: blink 1s ease-in-out infinite;
+
+        @keyframes blink {
+          50% {
+            opacity: 0;
+          }
+        }
+      }
     }
   }
 </style>

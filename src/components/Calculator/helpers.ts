@@ -1,5 +1,6 @@
 import type { CalcGPT } from "../../core/CalcGPT";
 import { mathToDisplayCharacters } from "../../helpers";
+import { FunctionQueue } from "./FunctionQueue";
 
 declare global {
   // indicate whether we are waiting for the model to predict the next output
@@ -17,6 +18,8 @@ const topPSlider = calculator.querySelector(
   'div.slider.top-p input[type="number"]',
 ) as HTMLInputElement;
 
+const functionQueue = new FunctionQueue(500);
+
 export function predictAnswer() {
   if (globalThis.isPredicting) {
     return;
@@ -25,19 +28,30 @@ export function predictAnswer() {
   mathOutput.innerText = "";
 
   globalThis.isPredicting = true;
+  mathOutput.classList.add("loading");
   globalThis.calcGPT
     .calculate({
       input: mathInput.value,
       outputHandler: (newToken: string) => {
-        mathOutput.innerText += mathToDisplayCharacters(newToken);
+        mathToDisplayCharacters(newToken)
+          .split("")
+          .forEach((char) => {
+            functionQueue.add(() => {
+              mathOutput.innerText += char;
+            });
+          });
       },
       temperature: Number(temperatureSlider.value),
       topP: Number(topPSlider.value),
     })
     .catch((e: Error) => {
+      functionQueue.clear();
       mathOutput.innerText = e.message;
     })
     .finally(() => {
-      globalThis.isPredicting = false;
+      functionQueue.add(() => {
+        globalThis.isPredicting = false;
+        mathOutput.classList.remove("loading");
+      }, true);
     });
 }
