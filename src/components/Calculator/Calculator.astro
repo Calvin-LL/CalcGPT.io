@@ -74,6 +74,7 @@ const { ...props } = Astro.props;
       case "clear":
         mathInput.value = "";
         mathOutput.innerText = "";
+        globalThis.functionQueue.clear();
         break;
       case "backspace":
         mathInput.value = mathInput.value.slice(0, -1);

@@ -6,6 +6,7 @@ declare global {
   // indicate whether we are waiting for the model to predict the next output
   var isPredicting: boolean;
   var calcGPT: CalcGPT;
+  var functionQueue: FunctionQueue;
 }
 
 const calculator = document.getElementById("calculator")!;
@@ -18,13 +19,14 @@ const topPSlider = calculator.querySelector(
   'div.slider.top-p input[type="number"]',
 ) as HTMLInputElement;
 
-const functionQueue = new FunctionQueue(500);
+globalThis.functionQueue = new FunctionQueue(500);
 
 export function predictAnswer() {
   if (globalThis.isPredicting) {
     return;
   }
 
+  globalThis.functionQueue.clear();
   mathOutput.innerText = "";
 
   globalThis.isPredicting = true;
