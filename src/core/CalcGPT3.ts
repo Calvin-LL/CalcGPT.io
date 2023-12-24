@@ -20,6 +20,7 @@ export class CalcGPT3 extends CalcGPTGeneric {
     outputHandler,
     temperature = DEFAULT_TEMPERATURE,
     topP = DEFAULT_TOP_P,
+    abortController = new AbortController(),
   }: GPTCalculateArgs): Promise<void> {
     if (input.length === 0) {
       outputHandler("please enter some math");
@@ -37,8 +38,7 @@ export class CalcGPT3 extends CalcGPTGeneric {
     url.searchParams.set("t", temperature.toString());
     url.searchParams.set("p", topP.toString());
 
-    const controller = new AbortController();
-    const signal = controller.signal;
+    const signal = abortController.signal;
 
     let response: Response;
     try {
@@ -61,7 +61,10 @@ export class CalcGPT3 extends CalcGPTGeneric {
       return;
     }
 
-    const stream = Stream.fromSSEResponse<Completion>(response, controller);
+    const stream = Stream.fromSSEResponse<Completion>(
+      response,
+      abortController,
+    );
 
     for await (const part of stream) {
       const newToken = part.choices[0].text;

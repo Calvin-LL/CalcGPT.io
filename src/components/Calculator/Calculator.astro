@@ -47,7 +47,7 @@ const { ...props } = Astro.props;
 </script>
 
 <script>
-  import { predictAnswer } from "./helpers";
+  import { clear, predictAnswer } from "./helpers";
 
   const calculator = document.getElementById("calculator")!;
   const content = calculator.querySelector(".content")!;
@@ -68,21 +68,16 @@ const { ...props } = Astro.props;
 
     switch (value) {
       case "=":
-        mathOutput.innerText = "";
         predictAnswer();
         break;
       case "clear":
-        globalThis.functionQueue.clear();
-        mathInput.value = "";
-        mathOutput.innerText = "";
-        mathOutput.classList.remove("loading");
+        clear();
         break;
       case "backspace":
         mathInput.value = mathInput.value.slice(0, -1);
         mathOutput.innerText = "";
         break;
       case "retry":
-        mathOutput.innerText = "";
         predictAnswer();
         break;
       default:

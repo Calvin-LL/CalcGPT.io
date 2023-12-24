@@ -21,6 +21,7 @@ export class FunctionQueue {
       clearTimeout(this.timer);
       this.timer = undefined;
     }
+    this.isRunning = false;
   }
 
   private run() {

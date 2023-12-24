@@ -10,6 +10,7 @@ export interface GPTCalculateArgs {
   outputHandler: GPTOutputHandler;
   temperature?: number;
   topP?: number;
+  abortController?: AbortController;
 }
 
 export interface CalcGPT {

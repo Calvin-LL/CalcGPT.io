@@ -3,10 +3,7 @@ import { mathToDisplayCharacters } from "../../helpers";
 import { FunctionQueue } from "./FunctionQueue";
 
 declare global {
-  // indicate whether we are waiting for the model to predict the next output
-  var isPredicting: boolean;
   var calcGPT: CalcGPT;
-  var functionQueue: FunctionQueue;
 }
 
 const calculator = document.getElementById("calculator")!;
@@ -19,22 +16,37 @@ const topPSlider = calculator.querySelector(
   'div.slider.top-p input[type="number"]',
 ) as HTMLInputElement;
 
-globalThis.functionQueue = new FunctionQueue(500);
+// indicate whether we are waiting for the model to predict the next output
+let isPredicting = false;
+let abortController: AbortController | undefined = undefined;
+const functionQueue = new FunctionQueue(500);
+
+export function clear() {
+  isPredicting = false;
+  abortController?.abort();
+  functionQueue.clear();
+  mathInput.value = "";
+  mathOutput.innerText = "";
+  mathOutput.classList.remove("loading");
+}
 
 export function predictAnswer() {
-  if (globalThis.isPredicting) {
+  if (isPredicting) {
     return;
   }
 
-  globalThis.functionQueue.clear();
+  abortController?.abort();
+  functionQueue.clear();
   mathOutput.innerText = "";
 
-  globalThis.isPredicting = true;
+  isPredicting = true;
+  abortController = new AbortController();
   mathOutput.classList.add("loading");
   globalThis.calcGPT
     .calculate({
       input: mathInput.value,
       outputHandler: (newToken: string) => {
+        console.log(newToken);
         mathToDisplayCharacters(newToken)
           .split("")
           .forEach((char) => {
@@ -45,6 +57,7 @@ export function predictAnswer() {
       },
       temperature: Number(temperatureSlider.value),
       topP: Number(topPSlider.value),
+      abortController,
     })
     .catch((e: Error) => {
       functionQueue.clear();
@@ -52,7 +65,7 @@ export function predictAnswer() {
     })
     .finally(() => {
       functionQueue.add(() => {
-        globalThis.isPredicting = false;
+        isPredicting = false;
         mathOutput.classList.remove("loading");
       }, true);
     });
