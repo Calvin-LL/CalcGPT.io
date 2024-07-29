@@ -37,31 +37,25 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   topP = Math.max(0, Math.min(1, topP));
 
   const prompt = `1+1=2\n5-2=3\n2*4=8\n9/3=3\n10/3=3.33333333333\n${math}=`;
+  let response: Response;
 
-  const openAI = new OpenAI({
-    apiKey: context.env.OPENAI_API_KEY,
-  });
-
-  let { readable, writable } = new TransformStream();
-  let writer = writable.getWriter();
-
-  context.waitUntil(
-    (async () => {
-      const stream = await await openAI.completions.create({
+  try {
+    const openAI = new OpenAI();
+    response = await openAI.completions
+      .create({
         model: "babbage-002",
         temperature,
         top_p: topP,
         stop: "\n",
         prompt,
         stream: true,
-      });
+      })
+      .asResponse();
+  } catch (error) {
+    return new Response("api error", {
+      status: 500,
+    });
+  }
 
-      for await (const part of stream) {
-        writer.write(part);
-      }
-      writer.close();
-    })(),
-  );
-
-  return new Response(readable);
+  return response;
 };
