@@ -7,7 +7,7 @@ export default defineConfig({
     enabled: false,
   },
   integrations: [
-    proxyMiddleware("/.netlify/functions/math", {
+    proxyMiddleware("/math", {
       target: "https://calcgpt.io/",
       changeOrigin: true,
     }),

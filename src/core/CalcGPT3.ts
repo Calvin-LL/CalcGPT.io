@@ -33,7 +33,7 @@ export class CalcGPT3 extends CalcGPTGeneric {
       return;
     }
 
-    const url = new URL("/.netlify/functions/math", window.location.href);
+    const url = new URL("/math", window.location.href);
     url.searchParams.set("m", displayToMathCharacters(input));
     url.searchParams.set("t", temperature.toString());
     url.searchParams.set("p", topP.toString());
