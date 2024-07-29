@@ -40,7 +40,9 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   let response: Response;
 
   try {
-    const openAI = new OpenAI();
+    const openAI = new OpenAI({
+      apiKey: context.env.OPENAI_API_KEY,
+    });
     response = await openAI.completions
       .create({
         model: "babbage-002",
@@ -52,6 +54,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       })
       .asResponse();
   } catch (error) {
+    console.error(error);
     return new Response("api error", {
       status: 500,
     });
