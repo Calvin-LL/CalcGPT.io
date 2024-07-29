@@ -1,10 +1,8 @@
-import assert from "node:assert";
-
 import type { HexColor } from "./types/CssColor";
 
 export function colorLuminance(hex: HexColor, lum: number): HexColor {
   // check with RegExp
-  assert(/^#[0-9A-F]{6}$/i.test(hex) || /^#[0-9A-F]{3}$/i.test(hex));
+  console.assert(/^#[0-9A-F]{6}$/i.test(hex) || /^#[0-9A-F]{3}$/i.test(hex));
 
   let hexWithoutHash = hex.slice(1);
 

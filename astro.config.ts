@@ -7,7 +7,7 @@ export default defineConfig({
     enabled: false,
   },
   integrations: [
-    proxyMiddleware("/math", {
+    proxyMiddleware("/api/math", {
       target: "https://calcgpt.io/",
       changeOrigin: true,
     }),
