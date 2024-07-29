@@ -31,9 +31,9 @@ export function clear() {
 }
 
 export function predictAnswer() {
-  if (isPredicting) {
-    return;
-  }
+  // if (isPredicting) {
+  //   return;
+  // }
 
   abortController?.abort();
   functionQueue.clear();
