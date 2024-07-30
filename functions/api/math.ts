@@ -1,12 +1,12 @@
-import { type Context } from "@netlify/functions";
 import OpenAI from "openai";
 import { MATH_LENGTH_LIMIT } from "../../src/core/CalcGPT3";
 
-export default async function (
-  req: Request,
-  context: Context,
-): Promise<Response> {
-  const searchParams = new URL(req.url).searchParams;
+interface Env {
+  OPENAI_API_KEY: string;
+}
+
+export const onRequest: PagesFunction<Env> = async (context) => {
+  const searchParams = new URL(context.request.url).searchParams;
 
   console.log(Object.fromEntries(searchParams.entries()));
 
@@ -40,7 +40,9 @@ export default async function (
   let response: Response;
 
   try {
-    const openAI = new OpenAI();
+    const openAI = new OpenAI({
+      apiKey: context.env.OPENAI_API_KEY,
+    });
     response = await openAI.completions
       .create({
         model: "babbage-002",
@@ -52,14 +54,11 @@ export default async function (
       })
       .asResponse();
   } catch (error) {
+    console.error(error);
     return new Response("api error", {
       status: 500,
     });
   }
 
-  return new Response(response.body, {
-    headers: {
-      "content-type": "text/event-stream",
-    },
-  });
-}
+  return response;
+};
