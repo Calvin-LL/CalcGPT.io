@@ -6,7 +6,7 @@
 
 		@media (prefers-color-scheme: dark) {
 		.dark {
-		fill: #ecf0f3;}
+		fill: #a8bbca;}
 		}
 
 		.light {
