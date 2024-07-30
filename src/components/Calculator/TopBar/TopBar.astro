@@ -5,7 +5,14 @@ import Logo from "./Logo.astro";
 <div class="top-bar">
   <div class="left">
     <Logo class="logo" />
-    <span>CalcGPT</span>
+    <div class="name">
+      <div class="calc">CalcGPT</div>
+      <div class="calvin">
+        by <a href="https://calvin.sh" target="_blank" rel="noopener noreferrer"
+          >Calvin Liang</a
+        >
+      </div>
+    </div>
   </div>
 </div>
 
@@ -29,10 +36,20 @@ import Logo from "./Logo.astro";
         height: calc(var(--buttonSize) * 0.4);
       }
 
-      > span {
-        font-size: calc(var(--buttonSize) * 0.4);
-        font-weight: 700;
+      > .name {
         margin-left: 0.5rem;
+
+        > .calc {
+          font-size: calc(var(--buttonSize) * 0.3);
+          line-height: 1;
+          font-weight: 700;
+        }
+
+        > .calvin {
+          font-size: calc(var(--buttonSize) * 0.1);
+          line-height: 1;
+          opacity: 0.8;
+        }
       }
     }
   }
