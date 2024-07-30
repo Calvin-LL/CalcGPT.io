@@ -15,22 +15,22 @@ const darkTextColor = "#F4F9FD";
 const lightColorDifference = 0.15;
 const darkLightShadowColor = colorLuminance(
   lightBackgroundColor,
-  lightColorDifference * -1,
+  lightColorDifference * -1
 );
 const lightLightShadowColor = colorLuminance(
   lightBackgroundColor,
-  lightColorDifference,
+  lightColorDifference
 );
 
 // dark theme
 const darkColorDifference = 0.9;
 const darkDarkShadowColor = colorLuminance(
   darkBackgroundColor,
-  darkColorDifference * -1,
+  darkColorDifference * -1
 );
 const lightDarkShadowColor = colorLuminance(
   darkBackgroundColor,
-  darkColorDifference,
+  darkColorDifference
 );
 const colors = {
   lightBackgroundColor,
@@ -42,10 +42,8 @@ const colors = {
 
 <Layout title="CalcGPT" {...colors}>
   <main>
-    <section>
+    <section class="main">
       <Calculator {...colors} />
-    </section>
-    <section>
       <DescriptionCard />
     </section>
     <footer>
@@ -94,6 +92,21 @@ const colors = {
       }
 
       margin: auto;
+
+      section.main {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        flex-wrap: wrap;
+
+        margin: 0px;
+        gap: 2rem;
+
+        @media (min-width: 461px) {
+          margin: 2rem;
+        }
+      }
     }
   </style>
 </Layout>

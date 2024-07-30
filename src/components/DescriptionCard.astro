@@ -51,19 +51,24 @@
 
 <style lang="scss">
   .description-card-container {
+    flex: 1;
+    flex-basis: var(--calculatorWidth);
+
     margin: auto;
 
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
+
+    @media (max-width: 960px) {
+      justify-content: center;
+    }
 
     .description-card {
       --height: 2;
 
       max-width: 800px;
       padding: 2rem;
-      margin: 2rem;
 
       box-shadow: calc(var(--shadowOffset) * var(--height))
         calc(var(--shadowOffset) * var(--height))
@@ -75,7 +80,7 @@
         background-color: #222;
       }
 
-      @media (max-width: 500px) {
+      @media (max-width: 460px) {
         padding: 1.5rem;
         margin: calc(var(--shadowOffset) * var(--height) * 2);
       }
