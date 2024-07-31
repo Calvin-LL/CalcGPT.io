@@ -1,17 +1,24 @@
 ---
+import globeSvg from "./globe.svg?raw";
 import Logo from "./Logo.astro";
 ---
 
 <div class="top-bar">
   <div class="left">
     <Logo class="logo" />
-    <div class="name">
-      <div class="calc">CalcGPT</div>
-      <div class="calvin">
-        by <a href="https://calvin.sh" target="_blank" rel="noopener noreferrer"
-          >Calvin Liang</a
-        >
-      </div>
+    <span>CalcGPT</span>
+  </div>
+  <div class="right">
+    <div>
+      by <a href="https://calvin.sh" target="_blank" rel="noopener noreferrer"
+        >Calvin Liang</a
+      >
+    </div>
+    <div>
+      <span class="icon" set:html={globeSvg} />
+      <a href="https://calvin.sh" target="_blank" rel="noopener noreferrer"
+        >calvin.sh</a
+      >
     </div>
   </div>
 </div>
@@ -36,20 +43,24 @@ import Logo from "./Logo.astro";
         height: calc(var(--buttonSize) * 0.4);
       }
 
-      > .name {
+      > span {
+        font-size: calc(var(--buttonSize) * 0.4);
+        line-height: 1;
+        font-weight: 700;
         margin-left: 0.5rem;
+      }
+    }
 
-        > .calc {
-          font-size: calc(var(--buttonSize) * 0.3);
-          line-height: 1;
-          font-weight: 700;
-        }
+    > .right {
+      font-size: calc(var(--buttonSize) * 0.15);
+      line-height: 1.3;
 
-        > .calvin {
-          font-size: calc(var(--buttonSize) * 0.1);
-          line-height: 1;
-          opacity: 0.8;
-        }
+      .icon {
+        display: inline-block;
+        height: 1em;
+        width: 1em;
+        vertical-align: middle;
+        fill: currentColor;
       }
     }
   }
