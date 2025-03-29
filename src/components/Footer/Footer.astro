@@ -1,21 +1,21 @@
 ---
-import CalvinIcon from "./icons/CalvinIcon.astro";
+import { Image } from "astro:assets";
+import pfp from "./pfp.png";
 ---
 
 <div id="footer">
-  <a
-    class="personal-logo-link"
-    href="https://calvin.sh"
-    target="_blank"
-    rel="noopener"
-  >
-    <CalvinIcon />
+  <a class="personal-logo-link" href="https://calvin.sh" target="_blank">
+    <Image
+      src={pfp}
+      alt="Calvin Liang"
+      class="personal-logo"
+      loading="lazy"
+      decoding="async"
+    />
   </a>
   <div class="text">
     Made with <span role="img" aria-label="laughter">🤣</span> by
-    <a href="https://calvin.sh" target="_blank" rel="noopener">
-      Calvin Liang
-    </a>
+    <a href="https://calvin.sh" target="_blank"> Calvin Liang</a>
   </div>
   <div class="text">
     <a
@@ -41,23 +41,8 @@ import CalvinIcon from "./icons/CalvinIcon.astro";
     }
 
     & > .personal-logo-link {
-      filter: grayscale(100%);
-      transition-property: all;
-      transition-duration: 125ms;
-      transition-timing-function: ease-in-out;
-
-      &:active {
-        filter: unset;
-      }
-
-      @media (hover: hover) {
-        &:hover {
-          filter: unset;
-        }
-      }
-
-      &,
-      & > :global(svg) {
+      img {
+        border-radius: 50%;
         height: 2rem;
         width: 2rem;
       }
