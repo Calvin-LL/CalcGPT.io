@@ -1,16 +1,20 @@
 ---
-import { Image } from "astro:assets";
+import { Picture } from "astro:assets";
 import pfp from "./pfp.png";
 ---
 
 <div id="footer">
   <a class="personal-logo-link" href="https://calvin.sh" target="_blank">
-    <Image
+    <Picture
       src={pfp}
       alt="Calvin Liang"
       class="personal-logo"
       loading="lazy"
       decoding="async"
+      formats={["avif"]}
+      fallbackFormat="jpeg"
+      sizes="2rem"
+      widths={[25, 50, 100]}
     />
   </a>
   <div class="text">

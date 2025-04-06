@@ -3,9 +3,7 @@ import proxyMiddleware from "./plugins/proxy-middleware";
 
 // https://astro.build/config
 export default defineConfig({
-  devToolbar: {
-    enabled: false,
-  },
+  devToolbar: { enabled: false },
   integrations: [
     proxyMiddleware("/api/math", {
       target: "https://calcgpt.io/",
