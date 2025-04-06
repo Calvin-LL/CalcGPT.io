@@ -5,7 +5,7 @@ interface Env {
   OPENAI_API_KEY: string;
 }
 
-export const onRequest: PagesFunction<Env> = async (context) => {
+export const onRequestGet: PagesFunction<Env> = async (context) => {
   const searchParams = new URL(context.request.url).searchParams;
 
   console.log(Object.fromEntries(searchParams.entries()));
