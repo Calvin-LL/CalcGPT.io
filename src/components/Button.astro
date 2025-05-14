@@ -190,6 +190,8 @@ const lightDarkGradientColor = colorLuminance(darkGradientColor, 0.5);
     }
 
     &::before {
+      touch-action: manipulation;
+
       position: absolute;
       z-index: -1;
       top: 0;
