@@ -39,30 +39,30 @@ const darkThumbColorDifference = 0.9;
 // light theme
 const darkLightThumbShadowColor = colorLuminance(
   lightThumbShadowColor,
-  lightThumbColorDifference * -1,
+  lightThumbColorDifference * -1
 );
 const lightLightThumbShadowColor = colorLuminance(
   lightThumbShadowColor,
-  lightThumbColorDifference,
+  lightThumbColorDifference
 );
 
 const darkLightThumbGradientColor = colorLuminance(
   lightThumbGradientColor,
-  -0.1,
+  -0.1
 );
 const lightLightThumbGradientColor = colorLuminance(
   lightThumbGradientColor,
-  0.07,
+  0.07
 );
 
 // dark theme
 const darkDarkThumbShadowColor = colorLuminance(
   darkThumbShadowColor,
-  darkThumbColorDifference * -1,
+  darkThumbColorDifference * -1
 );
 const lightDarkThumbShadowColor = colorLuminance(
   darkThumbShadowColor,
-  darkThumbColorDifference,
+  darkThumbColorDifference
 );
 
 const darkDarkThumbGradientColor = colorLuminance(darkThumbGradientColor, -0.1);
@@ -101,10 +101,10 @@ const lightDarkThumbGradientColor = colorLuminance(darkThumbGradientColor, 0.5);
 
   for (const slider of sliders) {
     const sliderInput = slider.querySelector(
-      "input[type='range']",
+      "input[type='range']"
     ) as HTMLInputElement;
     const numberInput = slider.querySelector(
-      "input[type='number']",
+      "input[type='number']"
     ) as HTMLInputElement;
 
     numberInput.addEventListener("blur", () => {
@@ -117,7 +117,7 @@ const lightDarkThumbGradientColor = colorLuminance(darkThumbGradientColor, 0.5);
 
       numberInput.value = Math.min(
         Math.max(parseFloat(numberInput.value), parseFloat(numberInput.min)),
-        parseFloat(numberInput.max),
+        parseFloat(numberInput.max)
       ).toString();
     });
 
@@ -155,6 +155,10 @@ const lightDarkThumbGradientColor = colorLuminance(darkThumbGradientColor, 0.5);
 
     width: 100%;
     margin-bottom: var(--calculatorGap);
+
+    input {
+      touch-action: manipulation;
+    }
 
     & > .top {
       margin-bottom: calc(var(--calculatorGap) / 2);

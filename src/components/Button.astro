@@ -52,11 +52,11 @@ const {
 // light theme
 const darkLightShadowColor = colorLuminance(
   lightShadowColor,
-  lightColorDifference * -1,
+  lightColorDifference * -1
 );
 const lightLightShadowColor = colorLuminance(
   lightShadowColor,
-  lightColorDifference,
+  lightColorDifference
 );
 
 const darkLightGradientColor = colorLuminance(lightGradientColor, -0.1);
@@ -65,11 +65,11 @@ const lightLightGradientColor = colorLuminance(lightGradientColor, 0.07);
 // dark theme
 const darkDarkShadowColor = colorLuminance(
   darkShadowColor,
-  darkColorDifference * -1,
+  darkColorDifference * -1
 );
 const lightDarkShadowColor = colorLuminance(
   darkShadowColor,
-  darkColorDifference,
+  darkColorDifference
 );
 
 const darkDarkGradientColor = colorLuminance(darkGradientColor, -0.1);
@@ -118,6 +118,8 @@ const lightDarkGradientColor = colorLuminance(darkGradientColor, 0.5);
       --lightGradientColor: var(--lightDarkGradientColor);
       --darkGradientColor: var(--darkDarkGradientColor);
     }
+
+    touch-action: manipulation;
 
     position: relative;
     z-index: 1;
