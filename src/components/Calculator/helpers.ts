@@ -16,13 +16,12 @@ const topPSlider = calculator.querySelector(
   'div.slider.top-p input[type="number"]',
 ) as HTMLInputElement;
 
-// indicate whether we are waiting for the model to predict the next output
-let isPredicting = false;
-let abortController: AbortController | undefined = undefined;
+let abortController: AbortController | undefined;
+let lastPromise: Promise<void> | undefined;
+let cancelling = false;
 const functionQueue = new FunctionQueue(500);
 
 export function clear() {
-  isPredicting = false;
   abortController?.abort();
   functionQueue.clear();
   mathInput.value = "";
@@ -30,23 +29,26 @@ export function clear() {
   mathOutput.classList.remove("loading");
 }
 
-export function predictAnswer() {
-  // if (isPredicting) {
-  //   return;
-  // }
+export async function predictAnswer() {
+  if (cancelling) {
+    return;
+  }
 
   abortController?.abort();
+  if (lastPromise) {
+    cancelling = true;
+    await lastPromise;
+    cancelling = false;
+  }
   functionQueue.clear();
   mathOutput.innerText = "";
 
-  isPredicting = true;
   abortController = new AbortController();
   mathOutput.classList.add("loading");
-  globalThis.calcGPT
+  lastPromise = globalThis.calcGPT
     .calculate({
       input: mathInput.value,
       outputHandler: (newToken: string) => {
-        // console.log(newToken);
         mathToDisplayCharacters(newToken)
           .split("")
           .forEach((char) => {
@@ -65,7 +67,6 @@ export function predictAnswer() {
     })
     .finally(() => {
       functionQueue.add(() => {
-        isPredicting = false;
         mathOutput.classList.remove("loading");
       }, true);
     });
