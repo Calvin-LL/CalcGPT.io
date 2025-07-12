@@ -55,6 +55,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       })
       .asResponse();
   } catch (error) {
+    console.error("Open AI api error", error);
     try {
       // fallback to fireworks.ai llama-v3p1-8b-instruct
       const fireworksAI = new OpenAI({
@@ -72,7 +73,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         })
         .asResponse();
     } catch (error) {
-      console.error(error);
+      console.error("Fireworks AI api error", error);
       return new Response("api error", {
         status: 500,
       });
