@@ -3,6 +3,7 @@ import { MATH_LENGTH_LIMIT } from "../../src/core/CalcGPT3";
 
 interface Env {
   OPENAI_API_KEY: string;
+  FIREWORKS_AI_API_KEY: string;
 }
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
@@ -54,10 +55,28 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       })
       .asResponse();
   } catch (error) {
-    console.error(error);
-    return new Response("api error", {
-      status: 500,
-    });
+    try {
+      // fallback to fireworks.ai llama-v3p1-8b-instruct
+      const fireworksAI = new OpenAI({
+        baseURL: "https://api.fireworks.ai/inference/v1",
+        apiKey: context.env.FIREWORKS_AI_API_KEY,
+      });
+      response = await fireworksAI.completions
+        .create({
+          model: "accounts/fireworks/models/llama-v3p1-8b-instruct",
+          temperature,
+          top_p: topP,
+          stop: "\n",
+          prompt,
+          stream: true,
+        })
+        .asResponse();
+    } catch (error) {
+      console.error(error);
+      return new Response("api error", {
+        status: 500,
+      });
+    }
   }
 
   return response;
