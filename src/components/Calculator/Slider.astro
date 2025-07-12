@@ -108,7 +108,6 @@ const lightDarkThumbGradientColor = colorLuminance(darkThumbGradientColor, 0.5);
     ) as HTMLInputElement;
 
     numberInput.addEventListener("blur", () => {
-      console.log(numberInput.value);
       if (numberInput.value === "") {
         numberInput.value = numberInput.dataset.default!;
         sliderInput.value = numberInput.dataset.default!;

@@ -46,7 +46,7 @@ export function predictAnswer() {
     .calculate({
       input: mathInput.value,
       outputHandler: (newToken: string) => {
-        console.log(newToken);
+        // console.log(newToken);
         mathToDisplayCharacters(newToken)
           .split("")
           .forEach((char) => {

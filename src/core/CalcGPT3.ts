@@ -49,6 +49,9 @@ export class CalcGPT3 extends CalcGPTGeneric {
         },
       });
     } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") {
+        return;
+      }
       outputHandler("api error");
       return;
     }
