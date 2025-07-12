@@ -65,7 +65,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       response = await fireworksAI.completions
         .create({
           model: "accounts/fireworks/models/llama-v3p1-8b-instruct",
-          temperature,
+          temperature: temperature * 1.8, // llama seems to need higher temperature to get similar results
           top_p: topP,
           stop: "\n",
           prompt,
